@@ -9,7 +9,7 @@ h1 {
 	color: #393939;
 }
 .content {
-	display: none;
+	#display: none;
 }
 
 .review {
@@ -35,7 +35,7 @@ h1 {
 }
 
 #login_box {
-	#display: none;
+	display: none;
 }
 
 [contentEditable=true]:empty:not(:focus):before{

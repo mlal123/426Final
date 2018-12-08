@@ -8,7 +8,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		login(name, pass);
 		e.preventDefault();
 	});
-    
+    login("nholroyd2", "tarheels");
     function login(name, pass){
 		$.ajax({
 			url: url + "/sessions",
@@ -77,11 +77,15 @@ function populateAirportMap(data){
 	//$(".dropdown-content").append("<a id =" + element.id +"> " + element.name + "</a>");
 	var keys = Object.keys(airports)
 	for(var key of keys){
-		var airport = airports[key];
-		$(".dropdown-content").append("<a id =" + airport.id +"> " + airport.name + "</a><br>");
-		//console.log(airport);
-	}
 
+		var airport = airports[key];
+		$(".dropdown-content").append("<div class='airports' id =" + airport.id +">" + airport.name + "</div><br>");
+		
+	}
 }
-			
+
+$(document).on("click", ".airports", function(){
+	console.log($(this));
+	console.log("clicked");
+});
 var airports = {};
