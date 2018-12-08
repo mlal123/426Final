@@ -40,5 +40,20 @@ h1 {
 
 [contentEditable=true]:empty:not(:focus):before{
         content:attr(data-text)
-    }
+	}
+
+	.dropdown-content {
+		display: none;
+		position: absolute;
+		background-color: #f1f1f1;
+		min-width: 160px;
+		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+		z-index: 1;
+	  }
+
+	  .dropdown:hover .dropdown-content {display: block;}
+	  .dropdown-content{
+		  max-height: 100px;
+		  overflow: auto;
+	  }
 

@@ -1,6 +1,7 @@
 "use strict";
+var url = "http://comp426.cs.unc.edu:3001";
 document.addEventListener("DOMContentLoaded", function (event) {
-    var url = "http://comp426.cs.unc.edu:3001";
+    //var url = "http://comp426.cs.unc.edu:3001";
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
 		var pass = $("#login_form")[0].password.value;
@@ -45,8 +46,42 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	}
 });
 
+function loadAirports(){
+	$.ajax({
+		url: url + "/airports/",
+		type: "GET",
+		// dataType: 'json',
+		xhrFields: {withCredentials: true},
+		// data: {},
+		success: function(data, status, xhr){
+			populateAirportMap(data);
+			console.log(airports);
+		},
+		error:(XMLHttpRequest,textStatus, errorThrown) => {
+			console.log(errorThrown);
+		}
+	});
+	
+}
+
 function makePage(){
     $("#login_box").hide();
-    $("#main_box").show();
+	$("#main_box").show();
+	loadAirports();
 }
-                          
+
+function populateAirportMap(data){
+	data.forEach(element => {
+		airports[element.name]= element;
+	});
+	//$(".dropdown-content").append("<a id =" + element.id +"> " + element.name + "</a>");
+	var keys = Object.keys(airports)
+	for(var key of keys){
+		var airport = airports[key];
+		$(".dropdown-content").append("<a id =" + airport.id +"> " + airport.name + "</a><br>");
+		//console.log(airport);
+	}
+
+}
+			
+var airports = {};
