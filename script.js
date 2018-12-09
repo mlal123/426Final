@@ -14,6 +14,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		e.preventDefault();
 	});
     
+    $("#myInput").on('keyup', function(){
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        var div = document.getElementById("dropdown_box");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        } 
+    });
+    
 //-------------------------------------------APIs--------------------------------------------//    
     function login(name, pass){
 		$.ajax({
