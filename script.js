@@ -15,18 +15,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	});
     
     $("#myInput").on('keyup', function(){
-        var input, filter, ul, li, a, i;
-        input = document.getElementById("myInput");
-        filter = input.value.toUpperCase();
-        var div = document.getElementById("dropdown_box");
-        a = div.getElementsByTagName("a");
-        for (i = 0; i < a.length; i++) {
-            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                a[i].style.display = "";
-            } else {
-                a[i].style.display = "none";
-            }
-        } 
+        filterFunction(); 
     });
     
 //-------------------------------------------APIs--------------------------------------------//    
@@ -73,7 +62,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  // data: {},
 		  success: function(data, status, xhr){
 			populateAirportMap(data);
-			console.log(airports);
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -115,7 +103,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         if (status === google.maps.places.PlacesServiceStatus.OK){
             
             for (var i = 0; i < results.length; i++) {
-                createMarker(results[i]);
+                var place = results[i];
+                createMarker(place);
+                addPlaceToPlacesDiv(place);
             }
         }else{
             console.log(status);
@@ -153,13 +143,30 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  $(".dropdown-content").append("<a class='airport' id =" + airport.id +">" + airport.name + "</a>");
 	   }
     }  
+    function filterFunction(){
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        var div = document.getElementById("dropdown_box");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
     function showAirport(airport){
         $(".map_stuff").show();
         $("#main_page").hide();
         initMap(airport.latitude, airport.longitude);
     }
-
-    $(document).on("click", ".airports", function(){
+    function addPlaceToPlacesDiv(place){
+        console.log(place);
+        $("#places_item").append("<a class='place'>" + place.name + "</a>");
+    }
+    $(document).on("click", ".airport", function(){
         var airport_div = $(this);
         var id = airport_div[0].id;
         var airport = airports[id];
