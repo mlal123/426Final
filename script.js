@@ -1,10 +1,12 @@
 "use strict";
 document.addEventListener("DOMContentLoaded", function (event) {
+    var map;
+    var infowindow;
     var url = "http://comp426.cs.unc.edu:3001";
+    login("mlal124", "Dragon12#");
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
 		var pass = $("#login_form")[0].password.value;
-		login(name, pass);
 		e.preventDefault();
 	});
     
@@ -43,10 +45,66 @@ document.addEventListener("DOMContentLoaded", function (event) {
 			}
 		});
 	}
-});
 
-function makePage(){
-    $("#login_box").hide();
-    $("#main_box").show();
-}
+    function makePage(){
+        $("#login_box").hide();
+        $("#main_box").show();
+        initMap();
+    }
+
+    function initMap() {
+        var myLatLng = new google.maps.LatLng(20.8985996246337, -156.42999267578125);
+        var mapOptions = {
+            center: myLatLng,
+            zoom: 15
+        }
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
+        infowindow = new google.maps.InfoWindow();
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+           location: myLatLng,
+            radius: 8000,
+            type: ['store']
+        }, callback);
+        
+        /*var marker = new google.maps.Marker({
+           position: myLatLng,
+            title: "Hello World",
+            //map: map
+        });
+        marker.setMap(map);*/
+    }
+    
+    function callback(results, status){
+        console.log("yo");
+        if (status === google.maps.places.PlacesServiceStatus.OK){
+            
+            for (var i = 0; i < results.length; i++) {
+                createMarker(results[i]);
+            }
+        }else{
+            console.log(status);
+        }
+        
+    }
+    
+    function createMarker(place) {
+        var placeLoc = place.geometry.location;
+        console.log(placeLoc);
+        var marker = new google.maps.Marker({
+          map: map,
+          position: place.geometry.location
+        });
+
+        google.maps.event.addListener(marker, 'click', function() {
+          infowindow.setContent(place.name);
+          infowindow.open(map, this);
+        });
+      }
+    
+    function searchNearby(request){
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch(request, callback);
+    }
+});
                           

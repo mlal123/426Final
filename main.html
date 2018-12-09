@@ -2,10 +2,13 @@
 <html>
 <head>
     <title>Q and A</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content= "initial-scale=1.0">
         <link rel='stylesheet' href='style.css'/>
+    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8JJG0bFf4Rp1b38ZHUsH_b92EH2P-X5g&libraries=places&callback"
+    async defer></script>
 </head>
 <body>
     <h1>FLIGHTS</h1>
@@ -20,11 +23,7 @@
         </form>
     </div>
     <div id="main_box" class="content"> Welcome to Main
-        <div id="main_page" class="header">
-        </div>
-        <div id="available_flights" class="header"></div>
-        <div id="flight_page" class="header"></div>
-        <div id="question_container" class="qa"></div>
+        <div id="map"></div>
     </div>
 </body>
 </html>
