@@ -28,14 +28,12 @@
     </div>
     <div id="main_box" class="content"> 
         <div id="main_page">
-            <div class="navbar">
                 <div class="dropdown">
-                  <button class="dropbtn">Select Airport</button>
-                  <div class="dropdown-content"></div>
+                  <input type="text" placeholder="Search..." id="myInput" onkeyup="filerAirports()">
+                  <div id="dropdown_box" class="dropdown-content">
+                  </div>
                 </div> 
-            </div>
         </div>
-        <div id="available_flights" class="header"></div>
         <div id="flight_page" class="header map_stuff">
             <div id="map"></div>
         </div>

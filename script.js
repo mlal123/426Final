@@ -135,7 +135,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	   var keys = Object.keys(airports)
 	   for(var key of keys){
 		  var airport = airports[key];
-		  $(".dropdown-content").append("<div class='airport' id =" + airport.id +">" + airport.name + "</div>");
+		  $(".dropdown-content").append("<a class='airport' id =" + airport.id +">" + airport.name + "</a>");
 	   }
     }  
     function showAirport(airport){
