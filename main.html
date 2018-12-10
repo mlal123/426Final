@@ -2,13 +2,20 @@
 <html>
 <head>
     <title>Q and A</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content= "initial-scale=1.0">
         <link rel='stylesheet' href='style.css'/>
+    
     <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
-    <script src="script.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA8JJG0bFf4Rp1b38ZHUsH_b92EH2P-X5g&libraries=places&callback"
+    async defer></script>
 </head>
 <body>
-    <h1>FLIGHTS</h1>
+    <div id="header_box">
+        <div class="header">My Flights</div>
+        <div class="header">FLIGHTS</div>
+        <div class="header">Logout</div>
+    </div>
     <div id="login_box"> Login Please
         <form id="login_form">
             <label for="username"> Username </label>
@@ -19,20 +26,25 @@
             <input type="submit" value="Submit">
         </form>
     </div>
-    <div id="main_box" class="content"> Welcome to Main
-        <div id="main_page" class="header">
-                <div class="navbar">
-                        <div class="dropdown">
-                          <button class="dropbtn">Select Airport 
-                          </button>
-                          <div class="dropdown-content">
-                          </div>
-                        </div> 
-                      </div>
+    <div id="main_box" class="content"> 
+        <div id="main_page">
+            <div class="dropdown">
+                <input type="text" placeholder="Search..." id="myInput">
+                <div id="dropdown_box" class="dropdown-content"></div>
+            </div> 
         </div>
-        <div id="available_flights" class="header"></div>
-        <div id="flight_page" class="header"></div>
-        <div id="question_container" class="qa"></div>
+        <div id="flight_page" class="header map_stuff">
+            <div id="map"></div>
+            <div id="places">
+                <div id="places_header">
+                    <div class="pheader">Name</div>
+                    <div class="pheader">Price Level</div>
+                    <div class="pheader">Rating</div>
+                    <div class="pheader">Open</div>
+                </div>
+                <div id="places_item"></div>
+            </div>
+        </div>
     </div>
 </body>
 </html>

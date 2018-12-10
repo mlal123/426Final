@@ -2,6 +2,8 @@ body{
 	overflow:hidden;
 	background-color: #f1f0ee;
 	color: #393939;
+    height: 100%;
+    width: 100%
 }
 
 h1 {
@@ -12,48 +14,163 @@ h1 {
 	#display: none;
 }
 
-.review {
-	display: none;
-}
-.header {
-	display: flex;
+#header_box {
+    display: flex;
 	flex-direction: row;
 	text-align: center;
 	justify-content: space-evenly;
 	align-items: center;
+    font-size: 1.5em;
+    padding-bottom: 2%;
+    font-weight: bold;
 }
 
+#places_header{
+    display: flex;
+	flex-direction: row;
+	#text-align: center;
+	#justify-content: space-evenly;
+	align-items: center;
+    font-size: 0.85em;
+    #border-bottom: 1px solid grey;
+    #border-top: 1px solid grey;
+    height: 10%;
+}
+
+#places_item {
+    height: 80%;
+}
+.pheader {
+    border-right: 1px solid grey;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+    border: 1px black solid;
+    width: 25%;
+}
+
+.map_stuff {
+    display: none;
+}
+
+.airport:hover {
+    background-color: red;
+}
+
+.airport {
+    #border: 1px solid black;
+}
+
+#flight_page {
+    height: 100%;
+    width: 100%;
+}
 #main_box {
 	border: 2px solid #393939;
 	border-radius: 10px;
-	height: 80vh;
+	height: 80%;
 	width: 80%;
 	text-align: center;
 	position: relative;
 	background-color: lightgrey;
 	margin: auto;
 }
+#places_item{
+    overflow-y: auto;
+}
+
+#main_page {
+    #border: 2px solid blue;
+    height: 90%;
+    width: 100%;
+    margin: auto;
+    text-align: center;
+    position: relative;
+    display: block;
+}
 
 #login_box {
 	display: none;
+<<<<<<< HEAD
+=======
+}
+
+#map {
+    margin: auto;
+    height: 50%;
+    width: 98%;
+}
+
+html {
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+#myInput {
+    background-image: url("searchicon.png");
+    background-repeat: no-repeat;
+    font-size: 1em;
+    padding: 2.5% 1.25% 2.5% 12%;
+    border: none;
+    width: 50%;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    
+}
+
+#myInput:focus .dropdown-content{display: block;}
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+    height: 50%;
+    width: 40%;
+    margin: auto;
+}
+
+.dropdown-content {
+    #display: none;
+    position: relative;
+    background-color: #f6f6f6;
+    min-width: 50%;
+    max-height: 100%;
+    width: 63%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+    margin: auto;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 5% 5%;
+    display: block;
+    font-size: 1em;
+}
+
+#places a {
+    color: black;
+    padding: 5% 5%;
+    display: block;
+    font-size: 1em;
+}
+
+#places {
+    height: 50%;
+}
+
+.place:hover {
+    background-color: red;
+}
+
+.header:hover {
+    color: red;
+>>>>>>> mangza
 }
 
 [contentEditable=true]:empty:not(:focus):before{
         content:attr(data-text)
 	}
-
-	.dropdown-content {
-		display: none;
-		position: absolute;
-		background-color: #f1f1f1;
-		min-width: 160px;
-		box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-		z-index: 1;
-	  }
-
-	  .dropdown:hover .dropdown-content {display: block;}
-	  .dropdown-content{
-		  max-height: 100px;
-		  overflow: auto;
-	  }
 
