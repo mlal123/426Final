@@ -1,15 +1,15 @@
 "use strict";
 var url = "http://comp426.cs.unc.edu:3001";
 document.addEventListener("DOMContentLoaded", function (event) {
-    
     var map;
     var infowindow;
     var airports = {};
+    var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
     
-    //login("mlal124", "Dragon12#");
+    login("mlal124", "Dragon12#");
 
-    login("nholroyd2", "tarheels");
+    //login("nholroyd2", "tarheels");
 
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
@@ -22,23 +22,46 @@ document.addEventListener("DOMContentLoaded", function (event) {
         filterFunction(); 
     });
     
-    $(document).on("click", ".airport", function(){
+   /* $(".airport").click(function(){
         console.log("clicked");
+        //$("#myInput").focus();
+        var airport_div = $(this);
+        var id = airport_div[0].id;
+        var airport = airports[id];
+        showAirport(airport);
+    });*/
+    
+    $(document).on("click", ".airport", function(){
         var airport_div = $(this);
         var id = airport_div[0].innerHTML;
         var airport = airports[id];
         showAirport(airport);
     });
-   /* $("#myInput").focusin(function(){
+    
+    $("#myInput").focusin(function(){
        $(".dropdown-content").show(); 
     });
-    
+    /*
     $("#myInput").focusout(function(){
-       $(".dropdown-content").hide(); 
-    });*/
-    
+        $(".dropdown-content").hide();
+    });
+   
     $("#logout").click(function (e){
         logout();
+    });*/
+    
+    $("#myairport").click(function (e){
+        $(".map_stuff").show();
+        $("#main_page").hide();
+        emptyMap();
+        defaultMapToUS(); 
+    });
+    
+    $("#home").click(function (e){
+        emptyMap();
+        $(".map_stuff").hide();
+        $("#main_page").show();
+        
     });
     
 //-------------------------------------------APIs--------------------------------------------//    
@@ -117,7 +140,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         loadAirports();
         //initMap();
     }
-    function initMap(lat, lon) {
+    function initMap(lat, lon, location) {
         var myLatLng = new google.maps.LatLng(lat, lon);
         var mapOptions = {
             center: myLatLng,
@@ -138,6 +161,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //map: map
         });
         marker.setMap(map);*/
+    }
+    function mapUS(lat, lon){
+        var latlng = new google.maps.LatLng(lat, lon);
+        var mapOptions = {
+            center: latlng,
+            zoom: 10
+        }
+        map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
     function callback(results, status){
         if (status === google.maps.places.PlacesServiceStatus.OK){
@@ -172,7 +203,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#main_box").show();
         loadAirports();
     }
-    function populateAirportMap(data){
+     function populateAirportMap(data){
 	   data.forEach(element => {
         airports[element.name]= element;
 	   });
@@ -184,6 +215,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
            $(".dropdown-content").append("<a class='airport' id =" + airport.id +">" + airport.name + "</a>");
        });
     }  
+    
+    function defaultMapToUS(){
+        $(".map_stuff").show();
+        $("#main_page").hide();
+        mapUS(37.0902, 95.7129);
+        
+    }
+    
     function filterFunction(){
         var input, filter, ul, li, a, i;
         input = document.getElementById("myInput");
@@ -204,8 +243,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         initMap(airport.latitude, airport.longitude);
     }
     function addPlaceToPlacesDiv(place){
-        console.log(place);
         $("#places_item").append("<a class='place'>" + place.name + "</a>");
     }
     
+    function emptyMap(){
+        $("#map").empty();
+        $("#places_item").empty();
+    }
+    
 });//onload
+			
