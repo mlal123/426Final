@@ -2,7 +2,7 @@
 var url = "http://comp426.cs.unc.edu:3001";
 document.addEventListener("DOMContentLoaded", function (event) {
     var map;
-    var infowindow;
+    var infoWindow;
     var airports = {};
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
@@ -54,7 +54,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".map_stuff").show();
         $("#main_page").hide();
         emptyMap();
-        defaultMapToUS(); 
+        //defaultMapToUS(); 
+        getCurrentLocation();
     });
     
     $("#home").click(function (e){
@@ -140,20 +141,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
         loadAirports();
         //initMap();
     }
-    function initMap(lat, lon, location) {
+    function initMap(lat, lon, type) {
         var myLatLng = new google.maps.LatLng(lat, lon);
         var mapOptions = {
             center: myLatLng,
             zoom: 12
         }
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
-        infowindow = new google.maps.InfoWindow();
-        var service = new google.maps.places.PlacesService(map);
-        service.nearbySearch({
-           location: myLatLng,
-            radius: 4000,
-            type: ['restaurant']
-        }, callback);
+        infoWindow = new google.maps.InfoWindow();
+        searchNearby(map, myLatLng, type);
         
         /*var marker = new google.maps.Marker({
            position: myLatLng,
@@ -161,6 +157,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
             //map: map
         });
         marker.setMap(map);*/
+    }
+    function searchNearby(map, myLatLng, type){
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+           location: myLatLng,
+            radius: 4000,
+            types: [type]
+        }, callback);
     }
     function mapUS(lat, lon){
         var latlng = new google.maps.LatLng(lat, lon);
@@ -170,9 +174,44 @@ document.addEventListener("DOMContentLoaded", function (event) {
         }
         map = new google.maps.Map(document.getElementById('map'), mapOptions);
     }
+    
+    function getCurrentLocation(){
+        defaultMapToUS();
+        infoWindow = new google.maps.InfoWindow;
+        
+        // Try HTML5 geolocation.
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(function(position) {
+                var pos = {
+                lat: position.coords.latitude,
+                lng: position.coords.longitude
+                };
+
+                infoWindow.setPosition(pos);
+                infoWindow.setContent('Location found.');
+                infoWindow.open(map);
+                map.setCenter(pos);
+                searchNearby(map, pos, "restaurant");
+            }, function() {
+                handleLocationError(true, infoWindow, map.getCenter());
+            });
+        } else {
+            // Browser doesn't support Geolocation
+            handleLocationError(false, infoWindow, map.getCenter());
+        }
+        
+    }
+    
+    function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+        infoWindow.setPosition(pos);
+        infoWindow.setContent(browserHasGeolocation ?
+                              'Error: The Geolocation service failed.' :
+                              'Error: Your browser doesn\'t support geolocation.');
+        infoWindow.open(map);
+    }
+    
     function callback(results, status){
         if (status === google.maps.places.PlacesServiceStatus.OK){
-            
             for (var i = 0; i < results.length; i++) {
                 var place = results[i];
                 createMarker(place);
@@ -190,13 +229,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
 
         google.maps.event.addListener(marker, 'click', function() {
-          infowindow.setContent(place.name);
-          infowindow.open(map, this);
+          infoWindow.setContent(place.name);
+          infoWindow.open(map, this);
         });
-    }
-    function searchNearby(request){
-        var service = new google.maps.places.PlacesService(map);
-        service.nearbySearch(request, callback);
     }
     function makePage(){
         $("#login_box").hide();
@@ -219,8 +254,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function defaultMapToUS(){
         $(".map_stuff").show();
         $("#main_page").hide();
-        mapUS(37.0902, 95.7129);
-        
+        mapUS(38.889931, -77.009003);
     }
     
     function filterFunction(){
@@ -240,7 +274,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function showAirport(airport){
         $(".map_stuff").show();
         $("#main_page").hide();
-        initMap(airport.latitude, airport.longitude);
+        initMap(airport.latitude, airport.longitude, 'restaurant');
     }
     function addPlaceToPlacesDiv(place){
         $("#places_item").append("<a class='place'>" + place.name + "</a>");
