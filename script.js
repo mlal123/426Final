@@ -25,17 +25,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $(document).on("click", ".airport", function(){
         console.log("clicked");
         var airport_div = $(this);
-        var id = airport_div[0].id;
+        var id = airport_div[0].innerHTML;
         var airport = airports[id];
         showAirport(airport);
     });
-    $("#myInput").focusin(function(){
+   /* $("#myInput").focusin(function(){
        $(".dropdown-content").show(); 
     });
     
     $("#myInput").focusout(function(){
        $(".dropdown-content").hide(); 
-    });
+    });*/
     
     $("#logout").click(function (e){
         logout();
@@ -174,14 +174,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     function populateAirportMap(data){
 	   data.forEach(element => {
-       airports[element.id]= element;
+        airports[element.name]= element;
 	   });
 	   //$(".dropdown-content").append("<a id =" + element.id +"> " + element.name + "</a>");
-	   var keys = Object.keys(airports)
-	   for(var key of keys){
-		  var airport = airports[key];
-		  $(".dropdown-content").append("<a class='airport' id =" + airport.id +">" + airport.name + "</a>");
-	   }
+        
+	   var keys = Object.keys(airports);
+        Object.keys(airports).sort().forEach(function(key, i) {
+           var airport = airports[key];
+           $(".dropdown-content").append("<a class='airport' id =" + airport.id +">" + airport.name + "</a>");
+       });
     }  
     function filterFunction(){
         var input, filter, ul, li, a, i;
@@ -208,4 +209,3 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     
 });//onload
-			
