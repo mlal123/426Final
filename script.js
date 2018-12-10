@@ -6,16 +6,39 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var infowindow;
     var airports = {};
     var url = "http://comp426.cs.unc.edu:3001";
+    
     //login("mlal124", "Dragon12#");
+
     login("nholroyd2", "tarheels");
+
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
 		var pass = $("#login_form")[0].password.value;
+        login(name, pass);
 		e.preventDefault();
 	});
     
     $("#myInput").on('keyup', function(){
         filterFunction(); 
+    });
+    
+    $(document).on("click", ".airport", function(){
+        console.log("clicked");
+        var airport_div = $(this);
+        var id = airport_div[0].id;
+        var airport = airports[id];
+        showAirport(airport);
+    });
+    $("#myInput").focusin(function(){
+       $(".dropdown-content").show(); 
+    });
+    
+    $("#myInput").focusout(function(){
+       $(".dropdown-content").hide(); 
+    });
+    
+    $("#logout").click(function (e){
+        logout();
     });
     
 //-------------------------------------------APIs--------------------------------------------//    
@@ -38,6 +61,23 @@ document.addEventListener("DOMContentLoaded", function (event) {
 			}
 		});
 	}
+    
+    function logout(){
+        $.ajax({
+			url: url + "/sessions",
+			type: "DELETE",
+            xhrFields: {withCredentials: true},
+			success: function(response){
+				console.log("logged out");
+                $("#login_box").show();
+                $(".content").hide();
+			},
+			error: function(err){
+				console.log(err);
+			}
+		});
+    }
+    
     function session(name, pass){
 		$.ajax({
 			url: url + "/users",
@@ -166,12 +206,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         console.log(place);
         $("#places_item").append("<a class='place'>" + place.name + "</a>");
     }
-    $(document).on("click", ".airport", function(){
-        var airport_div = $(this);
-        var id = airport_div[0].id;
-        var airport = airports[id];
-        showAirport(airport);
-    });
     
 });//onload
 			

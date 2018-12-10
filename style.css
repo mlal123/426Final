@@ -118,7 +118,6 @@ html {
     
 }
 
-#myInput:focus .dropdown-content{display: block;}
 
 .dropdown {
     position: relative;
@@ -129,7 +128,7 @@ html {
 }
 
 .dropdown-content {
-    #display: none;
+    display: none;
     position: relative;
     background-color: #f6f6f6;
     min-width: 50%;
