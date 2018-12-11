@@ -176,9 +176,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-              console.log(data);
-              getInstance(data[0].instance_id);
+            data.forEach(element => {
+                getInstance(element.instance_id);
+                $("#currentFlights").append("<div class = 'tix'></div>")
+            });
+              //getInstance(data[0].instance_id);
               // for each element create div, class = ticket dissplay flex, row
+
               //populateDepartures(data);
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
@@ -193,8 +197,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-              console.log("instances");
-              console.log(data);
               getFlight(data.flight_id);
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
@@ -209,8 +211,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-              console.log("flight");
-              console.log(data);
               //.ticket append arrivalid and departure id
               //make em divs or a 
               getAirport(data.arrival_id);
