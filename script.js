@@ -4,13 +4,21 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var map;
     var infoWindow;
     var airports = {};
+
     var restaurantPlaces = [];
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
-    
-    login("mlal124", "Dragon12#");
 
-    //login("nholroyd2", "tarheels");
+    login("nholroyd2", "tarheels");
+
+    Date.prototype.addHours = function(h) {    
+        //add h hours to current hour
+        this.setTime(this.getTime() + (h*60*60*1000)); 
+        return this;   
+    }
+
+    getUpComingFlights(6);
+    getTickets();
 
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
@@ -54,15 +62,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $("#myairport").click(function (e){
         $(".map_stuff").show();
         $("#main_page").hide();
+        $("#tickets").hide();
         emptyMap();
         //defaultMapToUS(); 
         getCurrentLocation();
     });
+    $("#mytickets").click(function(){
+        $(".map_stuff").hide();
+        $("#main_page").hide();
+        $("#tickets").show();
+    })
     
     $("#home").click(function (e){
         emptyMap();
         $(".map_stuff").hide();
         $("#main_page").show();
+        $("#tickets").hide();
         
     });
     /*
@@ -140,9 +155,111 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  }
 	   });
     }
+    
+    function getDepartures(currentTime, time){
+        $.ajax({
+		  url: url + "/flights?filter[departs_at_lt]="+time+"&filter[departs_at_gt]="+currentTime,
+		  type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              //populateDepartures(data);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+	   });
+    }
+
+    function getTickets(){
+        $.ajax({
+            url: url + "/tickets?filter[first_name_like]= John & filter[last_name_like] = Smith",
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+            data.forEach(element => {
+                getInstance(element.instance_id);
+                $("#currentFlights").append("<div class = 'tix'></div>")
+            });
+              //getInstance(data[0].instance_id);
+              // for each element create div, class = ticket dissplay flex, row
+
+              //populateDepartures(data);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+	   });
+    }
+
+    function getInstance(id){
+        $.ajax({
+            url: url + "/instances/" + id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              getFlight(data.flight_id);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+
+    function getFlight(id){
+        $.ajax({
+            url: url + "/flights/" + id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              //.ticket append arrivalid and departure id
+              //make em divs or a 
+              getAirport(data.arrival_id);
+              getAirport(data.departure_id);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+
+    function getAirport(id){
+        $.ajax({
+            url: url + "/airports/" + id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+                //append another a or div to .ticket with airport name
+              console.log("airports");
+              console.log(data);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+    
+
 
 //--------------------------------------JS Functions-----------------------------------------//
-    
+    function getUpComingFlights(hour){
+        var time = getNextHour(hour);
+        getDepartures(getCurrentTime(), time);
+    }
+    function getCurrentTime(){
+        var d = new Date();
+        var hour = d.getHours();
+        var min = d.getMinutes();
+        return hour + ":" + min;
+    }
+    function getNextHour(hour){
+        var d = new Date();
+        //add  hours
+        d.addHours(hour);
+        var hour = d.getHours();
+        var min = d.getMinutes();
+        var time = hour + ":" + min;
+        return time;
+    }
     function makePage(){
         $("#login_box").hide();
         $("#main_box").show();
@@ -224,6 +341,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             for (var i = 0; i < results.length; i++) {
                 restaurantPlaces[i]= results[i];
                 var place = results[i];
+                console.log(place);
                 createMarker(place);
                 addPlaceToPlacesDiv(place);
             }
@@ -248,12 +366,20 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#main_box").show();
         loadAirports();
     }
+    function populateDepartures(data){
+        data.forEach(element =>{
+            departureFlights.push(element);
+            matchtoAirport(element.departure_id);
+        })
+        console.log(departureFlights);
+    }
      function populateAirportMap(data){
          data.forEach(element => {
              airports[element.name]= element;
          });
          Object.keys(airports).sort().forEach(function(key, i) {
              var airport = airports[key];
+             //console.log(airport);
 		      $(".dropdown-content").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
          });
     }  
@@ -395,4 +521,3 @@ document.addEventListener("DOMContentLoaded", function (event) {
     });
     
 });//onload
-			
