@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var map;
     var infoWindow;
     var airports = {};
+
     var restaurantPlaces = [];
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
@@ -17,6 +18,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     getUpComingFlights(6);
+    getTickets();
 
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
@@ -153,15 +155,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  }
 	   });
     }
-    function getFlights(currentTime, time){
-        console.log(currentTime);
-        console.log(time);
+    
+    function getDepartures(currentTime, time){
         $.ajax({
 		  url: url + "/flights?filter[departs_at_lt]="+time+"&filter[departs_at_gt]="+currentTime,
 		  type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-              console.log(data);
+              //populateDepartures(data);
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -169,10 +170,80 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	   });
     }
 
+    function getTickets(){
+        $.ajax({
+            url: url + "/tickets?filter[first_name_like]= John & filter[last_name_like] = Smith",
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              console.log(data);
+              getInstance(data[0].instance_id);
+              // for each element create div, class = ticket dissplay flex, row
+              //populateDepartures(data);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+	   });
+    }
+
+    function getInstance(id){
+        $.ajax({
+            url: url + "/instances/" + id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              console.log("instances");
+              console.log(data);
+              getFlight(data.flight_id);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+
+    function getFlight(id){
+        $.ajax({
+            url: url + "/flights/" + id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              console.log("flight");
+              console.log(data);
+              //.ticket append arrivalid and departure id
+              //make em divs or a 
+              getAirport(data.arrival_id);
+              getAirport(data.departure_id);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+
+    function getAirport(id){
+        $.ajax({
+            url: url + "/airports/" + id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+                //append another a or div to .ticket with airport name
+              console.log("airports");
+              console.log(data);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+    
+
+
 //--------------------------------------JS Functions-----------------------------------------//
     function getUpComingFlights(hour){
         var time = getNextHour(hour);
-        getFlights(getCurrentTime(), time);
+        getDepartures(getCurrentTime(), time);
     }
     function getCurrentTime(){
         var d = new Date();
@@ -294,6 +365,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#login_box").hide();
         $("#main_box").show();
         loadAirports();
+    }
+    function populateDepartures(data){
+        data.forEach(element =>{
+            departureFlights.push(element);
+            matchtoAirport(element.departure_id);
+        })
+        console.log(departureFlights);
     }
      function populateAirportMap(data){
          data.forEach(element => {
