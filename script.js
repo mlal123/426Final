@@ -8,10 +8,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
     
-    login("mlal124", "Dragon12#");
-
+    
     //login("nholroyd2", "tarheels");
-
+    Date.prototype.addHours = function(h) {    
+        //add h hours to current hour
+        this.setTime(this.getTime() + (h*60*60*1000)); 
+        return this;   
+    }
+    
+    login("mlal124", "Dragon12#");
+    getUpComingFlights(6);
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
 		var pass = $("#login_form")[0].password.value;
@@ -140,9 +146,42 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  }
 	   });
     }
+    function getFlights(currentTime, time){
+        console.log(currentTime);
+        console.log(time);
+        $.ajax({
+		  url: url + "/flights?filter[departs_at_lt]="+time+"&filter[departs_at_gt]="+currentTime,
+		  type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              console.log(data);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+	   });
+    }
 
 //--------------------------------------JS Functions-----------------------------------------//
-    
+    function getUpComingFlights(hour){
+        var time = getNextHour(hour);
+        getFlights(getCurrentTime(), time);
+    }
+    function getCurrentTime(){
+        var d = new Date();
+        var hour = d.getHours();
+        var min = d.getMinutes();
+        return hour + ":" + min;
+    }
+    function getNextHour(hour){
+        var d = new Date();
+        //add  hours
+        d.addHours(hour);
+        var hour = d.getHours();
+        var min = d.getMinutes();
+        var time = hour + ":" + min;
+        return time;
+    }
     function makePage(){
         $("#login_box").hide();
         $("#main_box").show();
