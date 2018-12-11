@@ -8,9 +8,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
     
-    login("mlal124", "Dragon12#");
+    // login("mlal124", "Dragon12#");
 
-    //login("nholroyd2", "tarheels");
+    login("nholroyd2", "tarheels");
 
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
@@ -54,15 +54,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $("#myairport").click(function (e){
         $(".map_stuff").show();
         $("#main_page").hide();
+        $("#tickets").hide();
         emptyMap();
         //defaultMapToUS(); 
         getCurrentLocation();
     });
+    $("#mytickets").click(function(){
+        $(".map_stuff").hide();
+        $("#main_page").hide();
+        $("#tickets").show();
+    })
     
     $("#home").click(function (e){
         emptyMap();
         $(".map_stuff").hide();
         $("#main_page").show();
+        $("#tickets").hide();
         
     });
     /*
@@ -224,6 +231,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             for (var i = 0; i < results.length; i++) {
                 restaurantPlaces[i]= results[i];
                 var place = results[i];
+                console.log(place);
                 createMarker(place);
                 addPlaceToPlacesDiv(place);
             }
@@ -254,6 +262,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
          });
          Object.keys(airports).sort().forEach(function(key, i) {
              var airport = airports[key];
+             //console.log(airport);
 		      $(".dropdown-content").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
          });
     }  

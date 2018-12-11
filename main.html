@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Q and A</title>
+    <title>My Flights</title>
     <meta name="viewport" content= "initial-scale=1.0">
         <link rel='stylesheet' href='style.css'/>
     
@@ -12,8 +12,9 @@
 </head>
 <body>
     <div id="header_box">
-        <div id="myairport" class="header">My Airport</div>
-        <div id="home" class="header">FLIGHTS</div>
+        <div id="myairport" class="header">My Location</div>
+        <div id = "mytickets" class = header>My Tickets</div>
+        <div id="home" class="header">Airports</div>
         <div id="logout" class="header">Logout</div>
     </div>
     <div id="login_box"> Login Please
@@ -44,6 +45,23 @@
                 </div>
                 <div id="places_item"></div>
             </div>
+        </div>
+        <div id = "tickets" class = "myflighttickets" >
+            <div id = "bookFlight">
+            <div class = "dropdown2" id = "d1">
+                <input type = "text" id = "departure" placeholder="Departure Location">
+                <div class = "dropDepartures"></div>
+            </div>
+            <div class = "dropdown2" id = "d2">
+                <input type = "text"  id = "arrival" placeholder= "Arrival Location">
+                <div id = "dropArrivals"></div>
+            </div>
+            <div class = "dropdown2" id = "d3">
+                <input type = "text" placeholder="Time">
+            </div>
+            
+            </div>
+            <div id = "currentFlights"></div>
         </div>
     </div>
 </body>
