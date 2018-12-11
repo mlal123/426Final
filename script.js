@@ -4,6 +4,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var map;
     var infoWindow;
     var airports = {};
+    var restaurantPlaces = [];
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
     
@@ -64,6 +65,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#main_page").show();
         
     });
+    /*
+    $(document).on("click", ".airport", function(){
+        var airport_div = $(this);
+        var id = airport_div[0].id;
+        var airport = airports[id];
+        showAirport(airport);
+    });*/
     
 //-------------------------------------------APIs--------------------------------------------//    
     function login(name, pass){
@@ -158,6 +166,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
         marker.setMap(map);*/
     }
+
     function searchNearby(map, myLatLng, type){
         var service = new google.maps.places.PlacesService(map);
         service.nearbySearch({
@@ -209,10 +218,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
                               'Error: Your browser doesn\'t support geolocation.');
         infoWindow.open(map);
     }
-    
+
     function callback(results, status){
         if (status === google.maps.places.PlacesServiceStatus.OK){
             for (var i = 0; i < results.length; i++) {
+                restaurantPlaces[i]= results[i];
                 var place = results[i];
                 createMarker(place);
                 addPlaceToPlacesDiv(place);
@@ -239,16 +249,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
         loadAirports();
     }
      function populateAirportMap(data){
-	   data.forEach(element => {
-        airports[element.name]= element;
-	   });
-	   //$(".dropdown-content").append("<a id =" + element.id +"> " + element.name + "</a>");
-        
-	   var keys = Object.keys(airports);
-        Object.keys(airports).sort().forEach(function(key, i) {
-           var airport = airports[key];
-           $(".dropdown-content").append("<a class='airport' id =" + airport.id +">" + airport.name + "</a>");
-       });
+         data.forEach(element => {
+             airports[element.name]= element;
+         });
+         Object.keys(airports).sort().forEach(function(key, i) {
+             var airport = airports[key];
+		      $(".dropdown-content").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
+         });
     }  
     
     function defaultMapToUS(){
@@ -276,14 +283,116 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#main_page").hide();
         initMap(airport.latitude, airport.longitude, 'restaurant');
     }
-    function addPlaceToPlacesDiv(place){
-        $("#places_item").append("<a class='place'>" + place.name + "</a>");
-    }
-    
     function emptyMap(){
         $("#map").empty();
         $("#places_item").empty();
     }
+    function addPlaceToPlacesDiv(place){    
+        var open, rate, price;
+        if(place.opening_hours == null){
+            open = "NA";
+        } else {
+            if(place.opening_hours["open_now"]){
+            open = "Yes";
+            } else {
+                open = "No";
+            }
+        }
+        if(place.rating == null){
+            rate = "NA";
+        } else {
+            rate = place.rating;
+        }
+        if(place.price_level == null){
+            price = "NA";
+        } else {
+            price = place.price_level;
+        }
+       $("#places_item").append("<div class = 'restaurantObject' data-price =" + price + " data-rate = " + rate + " data-open = " + open + " data-name = " + place.name + " > <div class = 'name placeObject'>" + place.name + " </div> <div class = 'price placeObject' >  " + price + " </div> <div class = 'rate placeObject'>" + rate+ " </div><div class = 'open placeObject'>" + open + " </div> </div");
+       // $("#places_item").append("<div data-price =" + place.price_level + " data-rate = " + place.rating + " data-open = " + open + " class='place'>" + place.name + "</div>");
+    }
+
+//sort restaurants
+    // $(".pheader").click(function(){
+    //     $(this).style
+    // });
+
+    var restaurants = document.getElementsByClassName("restaurantObject");
+    //var names = restaurants.children("name");
+    function sortByName(){
+        var array = Array.prototype.slice.call(restaurants, 0);
+        array.sort(function(a,b){
+            var c = $(a).attr("data-name");
+            var d = $(b).attr("data-name");
+            if(c < d){
+                return -1;
+            }
+            if(c > d){
+                return 1;
+            }
+            return 0;
+        });
+        $(array).detach().appendTo("#places_item");
+    }
+    function sortByPrice(){
+        var array = Array.prototype.slice.call(restaurants, 0);
+        array.sort(function(a,b){
+            var c = $(a).attr("data-price");
+            var d = $(b).attr("data-price");
+            if(c < d){
+                return -1;
+            }
+            if(c > d){
+                return 1;
+            }
+            return 0;
+        });
+        $(array).detach().appendTo("#places_item");
+    }
+    function sortByRating(){
+        var array = Array.prototype.slice.call(restaurants, 0);
+        array.sort(function(a,b){
+            var c = $(a).attr("data-rate");
+            var d = $(b).attr("data-rate");
+            if(c > d){
+                return -1;
+            }
+            if(c < d){
+                return 1;
+            }
+            return 0;
+        });
+        $(array).detach().appendTo("#places_item");
+    }
+    function sortByOpen(){
+        var array = Array.prototype.slice.call(restaurants, 0);
+        array.sort(function(a,b){
+            var c = $(a).attr("data-open");
+            var d = $(b).attr("data-open");
+            if(c > d){
+                return -1;
+            }
+            if(c < d){
+                return 1;
+            }
+            return 0;
+        });
+        $(array).detach().appendTo("#places_item");
+    }
+
+
+    $("#p1").click(function(){
+       sortByName();
+    });
+    $("#p2").click(function(){
+        sortByPrice();
+     });
+    $("#p3").click(function(){
+         sortByRating();
+    });
+    $("#p4").click(function(){
+        sortByOpen();
+    });
     
 });//onload
 			
