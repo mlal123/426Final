@@ -236,10 +236,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
         array.sort(function(a,b){
             var c = $(a).attr("data-rate");
             var d = $(b).attr("data-rate");
-            if(c < d){
+            if(c > d){
                 return -1;
             }
-            if(c > d){
+            if(c < d){
                 return 1;
             }
             return 0;
