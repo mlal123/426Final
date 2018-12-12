@@ -60,12 +60,12 @@
             </div>
             <div class = "dropdown2" id = "d2">
                 <input type = "text"  id = "arrival" placeholder= "Arrival Location">
-                <div id = "dropArrivals"></div>
+                <div class = "dropArrivals"></div>
             </div>
             <div class = "dropdown3" id = "d3">
-                <input type = "text" placeholder="Date">
+                <input type = "text" id = "flightDate" placeholder="Date (YYYY-MM-DD)">
             </div>
-            
+            <button id = 'flightButton'>Find Flights</button>
             </div>
             <div id = "currentFlights">
                 <div id = "flightsHeader">
@@ -77,6 +77,15 @@
                 </div>
                 <div id = myCurrentFlights></div>
             </div>
+        </div>
+        <div id = "flightList">
+                <div id = "flightsHeader2">
+                        <div id = "f5" class = "fheader2 date">Date</div>
+                        <div id = "f6" class = "fheader2 time">Time</div>
+                        <div id = "f7" class = "fheader2 departureAirport">Departure Location</div>
+                        <div id = "f8" class = "fheader2 arrivalAirport">Arrival Location</div>
+                    </div>
+                    <div id = "availableFlights"></div>
         </div>
     </div>
 </body>

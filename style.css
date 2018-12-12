@@ -129,6 +129,12 @@ h1 {
 .airport:hover {
     background-color: red;
 }
+.airport1:hover{
+    background-color: red;
+}
+.airport2:hover{
+    background-color: red;
+}
 
 .airport {
     #border: 1px solid black;
@@ -190,9 +196,7 @@ html {
     position: relative;
     
 }
-.dropDepartures{
-    display:none;
-}
+
 .dropdown2{
     position: relative;
     margin: 5px;
@@ -205,6 +209,9 @@ html {
     height: 50%;
     width: 40%;
     margin: auto;
+}
+#flightButton{
+    height: 5px;
 }
 #bookFlight {
     display: flex;
@@ -229,6 +236,42 @@ html {
 }
 
 .dropdown-content a {
+    color: black;
+    padding: 5% 5%;
+    display: block;
+    font-size: 1em;
+}
+.dropDepartures {
+    display: none;
+    position: relative;
+    background-color: #f6f6f6;
+    min-width: 50%;
+    max-height: 100%;
+    width: 63%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+    margin: auto;
+}
+.dropDepartures a {
+    color: black;
+    padding: 5% 5%;
+    display: block;
+    font-size: 1em;
+}
+.dropArrivals {
+    display: none;
+    position: relative;
+    background-color: #f6f6f6;
+    min-width: 50%;
+    max-height: 100%;
+    width: 63%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+    margin: auto;
+}
+.dropArrivals a {
     color: black;
     padding: 5% 5%;
     display: block;
@@ -260,7 +303,9 @@ html {
 .restaurantObject:hover {
     color: red;
 }
-
+#flightList{
+    display: none;
+}
 
 [contentEditable=true]:empty:not(:focus):before{
         content:attr(data-text)
