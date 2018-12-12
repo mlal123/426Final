@@ -383,7 +383,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             },
             success: function(ddata, status, xhr){
-                console.log("airport added")
+                console.log("airport added");
+                emptyDropArrivals();
+                emptyDropDepartures();
+                emptyDropDownContent();
+                resetAirports();
+                loadAirports();
             },
             error: function(XMHttpRequest, textStatus, errorThrown){
                 console.log(errorThrown);
@@ -555,6 +560,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
              $(".dropdown-content").append("<a class='airport'>" + airport.name + "</a>");
          });
     }  
+    function emptyDropDepartures(){
+        $(".dropDepartures").empty();
+    }
+    
+    function emptyDropArrivals(){
+        $(".dropArrivals").empty();
+    }
+    function emptyDropDownContent(){
+        $(".dropdown-content").empty();
+    }
     
     function defaultMapToUS(){
         $(".map_stuff").show();
@@ -610,6 +625,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#tickets").hide();
         $("#mapheader").html(airport.name);
         initMap(airport.latitude, airport.longitude, 'restaurant');
+    }
+    function resetAirports(){
+        airports = {};
     }
     function emptyMap(){
         $("#map").empty();
