@@ -13,13 +13,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     login("nholroyd2", "tarheels");
     getAllInstances();
-    Date.prototype.addHours = function(h) {    
-        //add h hours to current hour
-        this.setTime(this.getTime() + (h*60*60*1000)); 
-        return this;   
-    }
-    
-    console.log(airports["hello"]);
 
     //getUpComingFlights(6);
     getTickets();
@@ -41,6 +34,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $("#myInput").on('keyup', function(){
         filterFunction(); 
     });
+
+//----------------------------- Click Functions -------------------------------------
     
     $(document).on("click", ".departureAirport", function(){
         var airport_div = $(this);
@@ -84,11 +79,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var arrivalPort = airports[arriveAiport];
         var departPort = airports[departAirport];
         getExistingFlights(departPort, arrivalPort);
-
-        //$("#flightList").show();
-        //$("#tickets").hide();
-        //console.log(inLocation);
-        //postToTickets();
+        removeAvailableFlights();
     });
     
     $(document).on('click', "#departure", function(){
@@ -100,8 +91,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
         e.stopPropagation();
     });
     
+    $("#departureInput").click(function(e){
+        e.stopPropagation();
+    });
+    
     $("#arrivalInput").focusin(function(e){
        $(".dropArrivals").show();
+        e.stopPropagation();
+    });
+    
+    $("#arrivalInput").click(function(e){
         e.stopPropagation();
     });
     
@@ -396,9 +395,31 @@ document.addEventListener("DOMContentLoaded", function (event) {
             }
         });
     }
+    function postToTickets(id){
+        $.ajax({
+            url: url + "/tickets",
+            type: "POST",
+            xhrFields: {withCredentials: true},
+            data:{ 
+                "ticket": {
+                    "first_name": "nholroyd2",
+                    "last_name":    "Holroyd",
+                    "age":          21,
+                    "gender":       "female",
+                    "is_purchased": true,
+                    "instance_id":  id
+                }
+            },
+       success: function(data, status, xhr){
+           console.log("ticket");
+       },
+       error: function(XMLHttpRequest,textStatus, errorThrown){
+           console.log(errorThrown);
+       }
+    });
+    }
    
     
-
 
 //--------------------------------------JS Functions-----------------------------------------//
     function cancelRandomFlight(){
@@ -560,16 +581,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
              $(".dropdown-content").append("<a class='airport'>" + airport.name + "</a>");
          });
     }  
-    function emptyDropDepartures(){
-        $(".dropDepartures").empty();
-    }
-    
-    function emptyDropArrivals(){
-        $(".dropArrivals").empty();
-    }
-    function emptyDropDownContent(){
-        $(".dropdown-content").empty();
-    }
     
     function defaultMapToUS(){
         $(".map_stuff").show();
@@ -807,28 +818,21 @@ $(document).on('click', ".flightInstance", function(){
     postToTickets(parseInt(flight[0].id));
 });
 
-function postToTickets(id){
-    $.ajax({
-        url: url + "/tickets",
-        type: "POST",
-        xhrFields: {withCredentials: true},
-        data:{ "ticket": {
-             "first_name": "nholroyd2",
-             "last_name":    "Holroyd",
-             "age":          21,
-             "gender":       "female",
-             "is_purchased": true,
-             "instance_id":  id
-        }
-     },
-       success: function(data, status, xhr){
-           console.log("ticket");
-       },
-       error: function(XMLHttpRequest,textStatus, errorThrown){
-           console.log(errorThrown);
-       }
-    });
-}
+//------------------------breaking apart doms and rebuilding ---------------------------//
+    function emptyDropDepartures(){
+        $(".dropDepartures").empty();
+    }
+    
+    function emptyDropArrivals(){
+        $(".dropArrivals").empty();
+    }
+    function emptyDropDownContent(){
+        $(".dropdown-content").empty();
+    }
+    
+    function removeAvailableFlights(){
+        $(".flightInstance").remove();
+    }
     
 });//onload
 			
