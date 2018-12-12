@@ -29,13 +29,15 @@
     </div>
     <div id="main_box" class="content"> 
         <div id="main_page">
-            <div class="dropdown">
-                <input type="text" placeholder="Search Airport..." id="myInput">
+            <div class="dropdown"> <h1>Search Airports</h1><br>
+                <input type="text" placeholder="Search Airport..." id="myInput" class="searchbar">
                 <div id="dropdown_box" class="dropdown-content"></div>
             </div> 
+            
         </div>
         <div id="flight_page" class="header map_stuff">
-            <div id="map"></div>
+            <h1 id="mapheader"></h1>
+            <div id="map"></div><br>
             <div class="tabs">
                 <div id="arrival"></div>
                 <div id="departure"></div>
@@ -43,10 +45,10 @@
             </div>
             <div id="places">
                 <div id="places_header">
-                    <div id = "p1" class="pheader name">Name</div>
-                    <div id = "p2" class="pheader price">Price Level</div>
-                    <div id = "p3" class="pheader rate">Rating</div>
-                    <div id = "p4" class="pheader open">Open</div>
+                    <div id = "name" class="pheader">Name</div>
+                    <div id = "price" class="pheader">Price Level</div>
+                    <div id = "rate" class="pheader">Rating</div>
+                    <div id = "open" class="pheader">Open</div>
                 </div>
                 <div id="places_item"></div>
             </div>
@@ -78,6 +80,7 @@
                 <div id = myCurrentFlights></div>
             </div>
         </div>
+        <!--
         <div id = "flightList">
                 <div id = "flightsHeader2">
                         <div id = "f5" class = "fheader2 date">Date</div>
@@ -88,6 +91,7 @@
                     </div>
                     <div id = "availableFlights"></div>
         </div>
+    -->
     </div>
 </body>
 </html>

@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var map;
     var infoWindow;
     var airports = {};
-
+    var toggle = false;
     var restaurantPlaces = [];
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
@@ -49,7 +49,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         showAirport(airport);
 
     });
-    $("")
     
     $(document).on("click", ".airport", function(){
         var airport_div = $(this);
@@ -62,21 +61,28 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $(document).on('click', "#departure", function(){
         $(".dropDepartures").show();
     });
+    
     $(document).on('click', "#arrival", function(){
         console.log("hi");
         $(".dropArrivals").show();
     });
-    $("#myInput").focusin(function(){
-       $(".dropdown-content").show(); 
+    
+    $(".searchbar").focusin(function(e){
+       $(".dropdown-content").show();
+        e.stopPropagation();
     });
-    /*
-    $("#myInput").focusout(function(){
+    
+    $(".searchbar").click(function(e){
+        e.stopPropagation();
+    });
+    
+    $(document).click(function(){
         $(".dropdown-content").hide();
     });
    
     $("#logout").click(function (e){
         logout();
-    });*/
+    });
     
     $("#myairport").click(function (e){
         $(".map_stuff").show();
@@ -455,6 +461,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".map_stuff").show();
         $("#main_page").hide();
         $("#tickets").hide();
+        $("#mapheader").html(airport.name);
         initMap(airport.latitude, airport.longitude, 'restaurant');
     }
     function emptyMap(){
