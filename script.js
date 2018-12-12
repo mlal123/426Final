@@ -49,11 +49,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
         showAirport(airport);
 
     });
+    $("")
+    
     $(document).on("click", ".airport", function(){
         var airport_div = $(this);
         var id = airport_div[0].innerHTML;
         var airport = airports[id];
         showAirport(airport);
+        $(".dropdown-content").hide();
     });
     
     $(document).on('click', "#departure", function(){
@@ -407,9 +410,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
          Object.keys(airports).sort().forEach(function(key, i) {
              var airport = airports[key];
              //console.log(airport);
+             /*
              $(".dropDepartures").append("<a class='airport1' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
-             $(".dropArrivals").append("<a class='airport2' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
-             $(".dropdown-content").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
+             $(".dropArrivals").append("<a class='airport2' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");*/
+             $(".dropdown-content").append("<a class='airport'>" + airport.name + "</a>");
          });
     }  
     
@@ -479,7 +483,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             price = place.price_level;
         }
        $("#places_item").append("<div class = 'restaurantObject' data-price =" + price + " data-rate = " + rate + " data-open = " + open + " data-name = " + place.name + " > <div class = 'name placeObject'>" + place.name + " </div> <div class = 'price placeObject' >  " + price + " </div> <div class = 'rate placeObject'>" + rate+ " </div><div class = 'open placeObject'>" + open + " </div> </div");
-       // $("#places_item").append("<div data-price =" + place.price_level + " data-rate = " + place.rating + " data-open = " + open + " class='place'>" + place.name + "</div>");
     }
 
 //sort restaurants
