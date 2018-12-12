@@ -357,7 +357,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             },
             success: function(data, status, xhr){
-             
+                console.log("Flight " + id + "has been cancelled");
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -375,9 +375,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         console.log(flightInstances);
         var index = Math.floor(Math.random()*flightInstances.length + 1);
         var flightInstance = flightInstances[index];
-        //console.log(flightInstance.id);
         cancelFlight(flightInstance.id, flightInstance);
-        //console.log(flightInstance);
     }
     function getUpComingFlights(hour){
         var time = getNextHour(hour);
