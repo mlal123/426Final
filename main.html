@@ -29,13 +29,15 @@
     </div>
     <div id="main_box" class="content"> 
         <div id="main_page">
-            <div class="dropdown">
-                <input type="text" placeholder="Search Airport..." id="myInput">
+            <div class="dropdown"> <h1>Search Airports</h1><br>
+                <input type="text" placeholder="Search Airport..." id="myInput" class="searchbar">
                 <div id="dropdown_box" class="dropdown-content"></div>
             </div> 
+            
         </div>
         <div id="flight_page" class="header map_stuff">
-            <div id="map"></div>
+            <h1 id="mapheader"></h1>
+            <div id="map"></div><br>
             <div class="tabs">
                 <div id="arrival"></div>
                 <div id="departure"></div>
@@ -43,36 +45,44 @@
             </div>
             <div id="places">
                 <div id="places_header">
-                    <div id = "p1" class="pheader name">Name</div>
-                    <div id = "p2" class="pheader price">Price Level</div>
-                    <div id = "p3" class="pheader rate">Rating</div>
-                    <div id = "p4" class="pheader open">Open</div>
+                    <div id = "name" class="pheader name">Name</div>
+                    <div id = "price" class="pheader price">Price Level</div>
+                    <div id = "rate" class="pheader rate">Rating</div>
+                    <div id = "open" class="pheader open">Open</div>
                 </div>
                 <div id="places_item"></div>
             </div>
         </div>
         <div id = "tickets" class = "myflighttickets" >
             <div id = "bookFlight">
-            <div class = "dropdown2" id = "d1">
-                <input type = "text" id = "departure" placeholder="Departure Location">
-                <div class = "dropDepartures">
+                <div id = "bookSearch">
+                    <div class = "dropdown2" id = "d1">
+                        <input type = "text" id = "departureInput" placeholder="  Departure Location..">
+                        <div id="dropdown_box2"class = "dropDepartures"></div>
+                    </div>
+                    <div class = "dropdown2" id = "d2">
+                        <input type = "text"  id = "arrivalInput" placeholder= "  Arrival Location..">
+                        <div id="dropdown_box3" class = "dropArrivals"></div>
+                    </div>
+                    <div id="findFlightButton">Go</div>
+                </div>
+                <div id = "availableFlights">
+                    <div id="tixHeader">
+                        <div id="tix_date" class="theader tix_date">Date</div>
+                        <div id="tix_dt" class="theader tix_dt">Depart Time</div>
+                        <div id="tix_df" class="theader tix_df">Depart From</div>
+                        <div id="tix_at" class="theader tix_at">Arrival Time</div>
+                        <div id="tix_ato" class="theader tix_af">Arrive To</div>
+                    </div>
                 </div>
             </div>
-            <div class = "dropdown2" id = "d2">
-                <input type = "text"  id = "arrival" placeholder= "Arrival Location">
-                <div id = "dropArrivals"></div>
-            </div>
-            <div class = "dropdown3" id = "d3">
-                <input type = "text" placeholder="Date">
-            </div>
-            
-            </div>
-            <div id = "currentFlights">
+            <div id = "currentFlights"> 
+                <h1> My Flights</h1>
                 <div id = "flightsHeader">
-                    <div id = "f1" class = "fheader date">Date</div>
-                    <div id = "f2" class = "fheader time">Time</div>
-                    <div id = "f3" class = "fheader departureAirport">Departure Location</div>
-                    <div id = "f4" class = "fheader arrivalAirport">Arrival Location</div>
+                    <div id = "date" class = "fheader date">Date</div>
+                    <div id = "time" class = "fheader time">Time</div>
+                    <div id = "departureAirport" class = "fheader departure">Departure Location</div>
+                    <div id = "arrivalAirport" class = "fheader arrival">Arrival Location</div>
     
                 </div>
                 <div id = myCurrentFlights></div>

@@ -1,14 +1,14 @@
 body{
 	overflow:hidden;
-	background-color: #f1f0ee;
-	color: #393939;
+	background-color: #eaeaea;
+	color: #60605f;
     height: 100%;
     width: 100%
 }
 
 h1 {
 	text-align: center;
-	color: #393939;
+	color: #60605f;
 }
 .content {
 	#display: none;
@@ -27,7 +27,10 @@ h1 {
 #flightsHeader{
     display: flex;
 	flex-direction: row;
-
+}
+#flightsHeader2{
+    display: flex;
+	flex-direction: row;
 }
 #places_header{
     display: flex;
@@ -36,15 +39,68 @@ h1 {
 	#justify-content: space-evenly;
 	align-items: center;
     font-size: 0.85em;
-    #border-bottom: 1px solid grey;
+    border-bottom: 1px solid #60605f;
     #border-top: 1px solid grey;
     height: 10%;
     margin-bottom: 5px;
 }
-
+#tixHeader{
+    display: flex;
+	flex-direction: row;
+	text-align: center;
+	justify-content: space-evenly;
+	align-items: center;
+    font-size: 0.85em;
+    border-bottom: 1px solid #60605f;
+    #border-top: 1px solid grey;
+    height: 10%;
+    margin-bottom: 5px;
+}
+.theader {
+    #border: 1px solid black;
+}
+.tix_date {
+    width: 10%;
+    #font-size: 0.75em;
+}
+.tix_dt {
+    width: 15%;
+    #font-size: 0.75em;
+}
+.tix_at {
+    width: 15%;
+    #font-size: 0.75em;
+}
+.tix_df {
+    width: 30%;
+    #font-size: 0.75em;
+}
+.tix_ato{
+    width: 30%;
+    #font-size: 0.75em;
+}
 .tix{
     display:flex;
     flex-direction: row;
+    height: 15%;
+    background-color: aliceblue;
+    border-radius: 5px;
+    margin-bottom: 0.5%;
+    font-size: 0.85em;
+    padding-top: 2%;
+}
+.flightInstance{
+    display:flex;
+    flex-direction: row;
+    border-radius: 8px;
+    height: 15%;
+    font-size: 0.85em;
+    background-color: aliceblue;
+    padding-top: 2%;
+}
+
+.flightInstance:hover{
+    background-color: #d8dfe5;
 }
 
 .restaurantObject{
@@ -56,7 +112,11 @@ h1 {
     font-size: 0.85em;
     #border-bottom: 1px solid grey;
     #border-top: 1px solid grey;
-    height: 10%;
+    height: 15%;
+    background-color: aliceblue;
+    border-radius: 8px;
+    margin-bottom: 0.5%;
+    padding-top: 2%;
 }
 
 .placeObject{
@@ -64,15 +124,26 @@ h1 {
     width: 25%;
     height: 100%;
 }
-
+#name:hover{
+    background-color:#c0c0be;
+}
 .name {
     width: 55%;
+}
+#price:hover{
+    background-color:#c0c0be;
 }
 .price{
     width: 15%;
 }
+#rate:hover{
+    background-color:#c0c0be;
+}
 .rate{
     width: 15%;
+}
+#open:hover{
+    background-color:#c0c0be;
 }
 .open{
     width: 15%;
@@ -81,41 +152,66 @@ h1 {
 #places_item {
     height: 80%;
 }
+
+#date:hover {
+    background-color: #c0c0be;
+}
 .date {
     width: 20%;
+}
+
+#time:hover {
+    background-color: #c0c0be;
 }
 .time{
     width:20%;
 }
-.arrivalAirport{
+
+#arrivalAirport:hover {
+    background-color: #d8dfe5;
+}
+
+.arrivalAirport:hover {
+    background-color: #d8dfe5;
+}
+
+.arrival{
     width: 30%;
 }
-.departureAirport{
+
+#departureAirport:hover {
+    background-color: #c0c0be;
+}
+
+.departureAirport:hover {
+    background-color: #d8dfe5;
+}
+.departTureAirport:hover {
+    
+}
+.departure{
     width:30%;
 }
-.tix{
-    font-size: 0.75em;
+
+#myCurrentFlights{
+    height: 80%;
+    overflow-y: auto;
 }
+
 .fheader {
-    border-right: 1px solid grey;
     height: 100%;
     text-align: center;
     margin: auto;
-    border: 1px black solid;
+    border-bottom: 1px solid #60605f;
     #width: 25%;
     font-size: 0.75em;
+    margin-bottom: 1%;
 }
 #currentFlights{
     height: 50%;
 }
 .pheader {
-    border-right: 1px solid grey;
     height: 100%;
-    text-align: center;
-    margin: auto;
-    border: 1px black solid;
-    #width: 25%;
-    #font-size: 0.75em;
 }
 
 .map_stuff {
@@ -124,28 +220,41 @@ h1 {
 #tickets {
     display: none;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .airport:hover {
     background-color: red;
 }
+.airport1:hover{
+    background-color: red;
+}
+.airport2:hover{
+    background-color: red;
+}
 
 .airport {
+    font-size: 0.5em;
     #border: 1px solid black;
 }
 
 #flight_page {
     height: 100%;
     width: 100%;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
 }
+
 #main_box {
-	border: 2px solid #393939;
+	#border: 2px solid #393939;
 	border-radius: 10px;
-	height: 80%;
+	height: 90%;
 	width: 80%;
 	text-align: center;
 	position: relative;
-	background-color: lightgrey;
+	#background-color: lightgrey;
 	margin: auto;
 }
 #places_item{
@@ -159,7 +268,8 @@ h1 {
     margin: auto;
     text-align: center;
     position: relative;
-    display: block;
+    display: flex;
+    flex-direction: column;
 }
 
 #login_box {
@@ -179,24 +289,86 @@ html {
     padding: 0;
 }
 
-#myInput {
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: #c0c0be;
+  opacity: 1; /* Firefox */
+}
+
+.searchbar:focus {outline: 3px solid #ddd;}
+
+.searchbar {
     background-image: url("searchicon.png");
     background-repeat: no-repeat;
     font-size: 1em;
     padding: 2.5% 1.25% 2.5% 12%;
     border: none;
-    width: 50%;
+    width: 87%;
+    height: 10%;
     border-bottom: 1px solid #ddd;
     position: relative;
-    
+    border-radius: 5px; 
 }
-.dropDepartures{
-    display:none;
+
+#bookSearch{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    height: 35%;
+    width: 100%;
 }
+
+#arrivalInput{
+    width: 100%;
+    font-size: 1em;
+    border: none;
+    height: 100%;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    border-radius: 5px;
+    margin: 2%;
+}
+
+#departureInput{
+    width: 100%;
+    font-size: 1em;
+    border: none;
+    height: 100%;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    border-radius: 5px;
+    margin: 2%;
+}
+
+#findFlightButton{
+    width: 15%;
+    font-size: 1em;
+    border: 2px solid grey;
+    height: 30%;
+    position: relative;
+    border-radius: 5px;
+    background-color: lightskyblue;
+}
+
+#findFlightButton:hover {
+    background-color: greenyellow;
+}
+
+#flightDate {
+    width: 100%;
+    font-size: 1em;
+    border: none;
+    height: 100%;
+    border-bottom: 1px solid #ddd;
+    position: relative;
+    border-radius: 5px;
+    margin: 2%;
+}
+
 .dropdown2{
     position: relative;
-    margin: 5px;
-   
+    margin: auto;
+    width: 50%;
+    margin-right: 1.5%;
 }
 
 .dropdown {
@@ -206,26 +378,34 @@ html {
     width: 40%;
     margin: auto;
 }
+#flightButton{
+    height: 5px;
+}
 #bookFlight {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height:50%;
+    width: 100%;
     margin: auto;
     position: relative;
-    overflow: hidden;
+}
+
+#availableFlights {
+    height: 80%;
+    width: 100%;
+    display: block;
 }
 
 .dropdown-content {
     display: none;
     position: relative;
     background-color: #f6f6f6;
-    min-width: 50%;
     max-height: 100%;
-    width: 63%;
+    width: 100%;
     overflow-y: auto;
+    margin: auto;
     border: 1px solid #ddd;
     z-index: 1;
-    margin: auto;
 }
 
 .dropdown-content a {
@@ -234,8 +414,33 @@ html {
     display: block;
     font-size: 1em;
 }
-
-#places a {
+.dropDepartures {
+    display: none;
+    position: relative;
+    background-color: #f6f6f6;
+    max-height: 100%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+    margin: auto;
+}
+.dropDepartures a {
+    color: black;
+    padding: 5% 5%;
+    display: block;
+    font-size: 1em;
+}
+.dropArrivals {
+    display: none;
+    position: relative;
+    background-color: #f6f6f6;
+    max-height: 100%;
+    overflow-y: auto;
+    border: 1px solid #ddd;
+    z-index: 1;
+    margin: auto;
+}
+.dropArrivals a {
     color: black;
     padding: 5% 5%;
     display: block;
@@ -244,23 +449,27 @@ html {
 
 #places {
     height: 50%;
+    text-align: center;
+}
+
+.header:hover {
+    color: #181817;
+}
+
+.restaurantObject:hover {
+    background-color: #d8dfe5;
 }
 
 /* .place:hover {
     background-color: red;
 }
-
-.header:hover {
-    color: red;
-} */
-
 .pheader:hover {
     color: red;
 }
-.restaurantObject:hover {
-    color: red;
-}
 
+#flightList{
+    display: none;
+}
 
 [contentEditable=true]:empty:not(:focus):before{
         content:attr(data-text)
