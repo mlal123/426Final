@@ -45,29 +45,30 @@
             </div>
             <div id="places">
                 <div id="places_header">
-                    <div id = "name" class="pheader">Name</div>
-                    <div id = "price" class="pheader">Price Level</div>
-                    <div id = "rate" class="pheader">Rating</div>
-                    <div id = "open" class="pheader">Open</div>
+                    <div id = "name" class="pheader name">Name</div>
+                    <div id = "price" class="pheader price">Price Level</div>
+                    <div id = "rate" class="pheader rate">Rating</div>
+                    <div id = "open" class="pheader open">Open</div>
                 </div>
                 <div id="places_item"></div>
             </div>
         </div>
         <div id = "tickets" class = "myflighttickets" >
             <div id = "bookFlight">
-            <div class = "dropdown2" id = "d1">
-                <input type = "text" id = "departure" placeholder="Departure Location">
-                <div class = "dropDepartures">
+                <div id = "bookSearch">
+                    <div class = "dropdown2" id = "d1">
+                        <input type = "text" id = "departure" placeholder="Departure Location">
+                        <div class = "dropDepartures"></div>
+                    </div>
+                    <div class = "dropdown2" id = "d2">
+                        <input type = "text"  id = "arrival" placeholder= "Arrival Location">
+                        <div class = "dropArrivals"></div>
+                    </div>
+                    <div class = "dropdown2" id = "d3">
+                        <input type = "text" id = "flightDate" placeholder="Date (YYYY-MM-DD)">
+                    </div>
+                    <div id="findFlight">Go</div>
                 </div>
-            </div>
-            <div class = "dropdown2" id = "d2">
-                <input type = "text"  id = "arrival" placeholder= "Arrival Location">
-                <div class = "dropArrivals"></div>
-            </div>
-            <div class = "dropdown3" id = "d3">
-                <input type = "text" id = "flightDate" placeholder="Date (YYYY-MM-DD)">
-            </div>
-            <button id = 'flightButton'>Find Flights</button>
             </div>
             <div id = "currentFlights">
                 <div id = "flightsHeader">
