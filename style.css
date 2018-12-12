@@ -24,7 +24,11 @@ h1 {
     padding-bottom: 2%;
     font-weight: bold;
 }
+#flightsHeader{
+    display: flex;
+	flex-direction: row;
 
+}
 #places_header{
     display: flex;
 	flex-direction: row;
@@ -38,6 +42,10 @@ h1 {
     margin-bottom: 5px;
 }
 
+.tix{
+    display:flex;
+    flex-direction: row;
+}
 
 .restaurantObject{
     display: flex;
@@ -73,6 +81,33 @@ h1 {
 #places_item {
     height: 80%;
 }
+.date {
+    width: 20%;
+}
+.time{
+    width:20%;
+}
+.arrivalAirport{
+    width: 30%;
+}
+.departureAirport{
+    width:30%;
+}
+.tix{
+    font-size: 0.75em;
+}
+.fheader {
+    border-right: 1px solid grey;
+    height: 100%;
+    text-align: center;
+    margin: auto;
+    border: 1px black solid;
+    #width: 25%;
+    font-size: 0.75em;
+}
+#currentFlights{
+    height: 50%;
+}
 .pheader {
     border-right: 1px solid grey;
     height: 100%;
@@ -88,6 +123,7 @@ h1 {
 }
 #tickets {
     display: none;
+    height: 100%;
 }
 
 .airport:hover {
@@ -154,6 +190,9 @@ html {
     position: relative;
     
 }
+.dropDepartures{
+    display:none;
+}
 .dropdown2{
     position: relative;
     margin: 5px;
@@ -170,6 +209,10 @@ html {
 #bookFlight {
     display: flex;
     flex-direction: row;
+    height:50%;
+    margin: auto;
+    position: relative;
+    overflow: hidden;
 }
 
 .dropdown-content {

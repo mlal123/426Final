@@ -55,18 +55,28 @@
             <div id = "bookFlight">
             <div class = "dropdown2" id = "d1">
                 <input type = "text" id = "departure" placeholder="Departure Location">
-                <div class = "dropDepartures"></div>
+                <div class = "dropDepartures">
+                </div>
             </div>
             <div class = "dropdown2" id = "d2">
                 <input type = "text"  id = "arrival" placeholder= "Arrival Location">
                 <div id = "dropArrivals"></div>
             </div>
-            <div class = "dropdown2" id = "d3">
-                <input type = "text" placeholder="Time">
+            <div class = "dropdown3" id = "d3">
+                <input type = "text" placeholder="Date">
             </div>
             
             </div>
-            <div id = "currentFlights"></div>
+            <div id = "currentFlights">
+                <div id = "flightsHeader">
+                    <div id = "f1" class = "fheader date">Date</div>
+                    <div id = "f2" class = "fheader time">Time</div>
+                    <div id = "f3" class = "fheader departureAirport">Departure Location</div>
+                    <div id = "f4" class = "fheader arrivalAirport">Arrival Location</div>
+    
+                </div>
+                <div id = myCurrentFlights></div>
+            </div>
         </div>
     </div>
 </body>

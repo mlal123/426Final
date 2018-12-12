@@ -19,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     getUpComingFlights(6);
     getTickets();
+    //getDepartureFlights();
 
     $("#login_form").submit(function (e){
 		var name = $("#login_form")[0].username.value;
@@ -27,19 +28,27 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		e.preventDefault();
 	});
     
+    $("#departure").on('keyup', function(){
+        filterFunction();
+    });
     $("#myInput").on('keyup', function(){
         filterFunction(); 
     });
     
-   /* $(".airport").click(function(){
-        console.log("clicked");
-        //$("#myInput").focus();
+    $(document).on("click", ".departureAirport", function(){
         var airport_div = $(this);
-        var id = airport_div[0].id;
+        var id = airport_div[0].innerHTML;
         var airport = airports[id];
         showAirport(airport);
-    });*/
-    
+
+    });
+    $(document).on("click", ".arrivalAirport", function(){
+        var airport_div = $(this);
+        var id = airport_div[0].innerHTML;
+        var airport = airports[id];
+        showAirport(airport);
+
+    });
     $(document).on("click", ".airport", function(){
         var airport_div = $(this);
         var id = airport_div[0].innerHTML;
@@ -47,6 +56,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         showAirport(airport);
     });
     
+    $("#departure").focusin(function(){
+        $(".dropDepartures"),show();
+    })
     $("#myInput").focusin(function(){
        $(".dropdown-content").show(); 
     });
@@ -171,14 +183,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
 
     function getTickets(){
+        var i = 1;
         $.ajax({
             url: url + "/tickets?filter[first_name_like]= John & filter[last_name_like] = Smith",
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
             data.forEach(element => {
-                getInstance(element.instance_id);
-                $("#currentFlights").append("<div class = 'tix'></div>")
+                $("#myCurrentFlights").append("<div id = " + i + " class = 'tix'></div>")
+                var thisTicket = $("#myCurrentFlights").children("#" + i);
+                getInstance(element.instance_id, thisTicket);
+                i++;
             });
               //getInstance(data[0].instance_id);
               // for each element create div, class = ticket dissplay flex, row
@@ -191,13 +206,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
 	   });
     }
 
-    function getInstance(id){
+    function getInstance(id, ticket){
         $.ajax({
             url: url + "/instances/" + id,
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-              getFlight(data.flight_id);
+              getFlight(data.flight_id,ticket);
+              var d = new Date(data.date);
+              ticket.append("<div class = 'date'>" + data.date + "</div>");
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -205,7 +222,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
-    function getFlight(id){
+    function getFlight(id, ticket){
         $.ajax({
             url: url + "/flights/" + id,
             type: "GET",
@@ -213,8 +230,15 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  success: function(data, status, xhr){
               //.ticket append arrivalid and departure id
               //make em divs or a 
-              getAirport(data.arrival_id);
-              getAirport(data.departure_id);
+              
+              getAirport(data.arrival_id, ticket, "departure");
+              getAirport(data.departure_id, ticket, "arrival");
+              var t = new Date(data.departs_at);
+              var mins = t.getMinutes();
+              if(t.getMinutes() < 10){
+                  mins = "0"+t.getMinutes();
+              }
+              ticket.append("<div class = 'time'>" + t.getHours() + ":" + mins + " </div>");
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -222,21 +246,55 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
-    function getAirport(id){
+    function getAirport(id, ticket, state){
         $.ajax({
             url: url + "/airports/" + id,
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
                 //append another a or div to .ticket with airport name
-              console.log("airports");
-              console.log(data);
+                if(state == "arrival"){
+                    ticket.append("<div class = 'arrivalAirport'>" + data.name + "</div>");
+                }
+                if(state == "departure"){
+                    ticket.append("<div class = 'departureAirport'>" + data.name + "</div>");
+                }
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
 		  }
         });
     }
+
+    // function getDepartureFlights(){
+    //     $.ajax({
+    //         url: url + "/flights",
+    //         type: "GET",
+	// 	  xhrFields: {withCredentials: true},
+	// 	  success: function(data, status, xhr){
+    //           data.forEach(element =>{
+    //          getAirports(element.departure_id, "departure");
+    //          getAirports(element.arrival_id, "arrival");
+    //           });
+	// 	  },
+	// 	  error: function(XMLHttpRequest,textStatus, errorThrown) {
+	// 		console.log(errorThrown);
+	// 	  }
+    //     });
+    // }
+    // function getAirports(id, state){
+    //     $.ajax({
+    //         url: url + "/airports/" + id,
+    //         type: "GET",
+	// 	  xhrFields: {withCredentials: true},
+	// 	  success: function(data, status, xhr){
+    //             console.log("airport:" + data.name);
+	// 	  },
+	// 	  error: function(XMLHttpRequest,textStatus, errorThrown) {
+	// 		console.log(errorThrown);
+	// 	  }
+    //     });
+    // }
     
 
 
@@ -341,7 +399,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
             for (var i = 0; i < results.length; i++) {
                 restaurantPlaces[i]= results[i];
                 var place = results[i];
-                console.log(place);
                 createMarker(place);
                 addPlaceToPlacesDiv(place);
             }
@@ -366,13 +423,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#main_box").show();
         loadAirports();
     }
-    function populateDepartures(data){
-        data.forEach(element =>{
-            departureFlights.push(element);
-            matchtoAirport(element.departure_id);
-        })
-        console.log(departureFlights);
-    }
+    
      function populateAirportMap(data){
          data.forEach(element => {
              airports[element.name]= element;
@@ -380,7 +431,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
          Object.keys(airports).sort().forEach(function(key, i) {
              var airport = airports[key];
              //console.log(airport);
-		      $(".dropdown-content").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
+             $(".dropDepartures").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
+             $(".dropArrivals").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
+             $(".dropdown-content").append("<a class='airport' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
          });
     }  
     
@@ -407,6 +460,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function showAirport(airport){
         $(".map_stuff").show();
         $("#main_page").hide();
+        $("#tickets").hide();
         initMap(airport.latitude, airport.longitude, 'restaurant');
     }
     function emptyMap(){
