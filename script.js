@@ -4,13 +4,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var map;
     var infoWindow;
     var airports = {};
-
+    var flightInstances = [];
     var restaurantPlaces = [];
     var clicked = false;
     var url = "http://comp426.cs.unc.edu:3001";
 
     login("nholroyd2", "tarheels");
-
+    getAllInstances();
     Date.prototype.addHours = function(h) {    
         //add h hours to current hour
         this.setTime(this.getTime() + (h*60*60*1000)); 
@@ -265,6 +265,40 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  }
         });
     }
+    
+    function getAllInstances(){
+        $.ajax({
+            url: url + "/instances",
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              flightInstances = data.slice(0, 100);
+              setInterval(cancelRandomFlight, 5000);
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+    function cancelFlight(id){
+        $.ajax({
+            url: url + "/instances/"+id,
+            type: "PUT",
+            xhrFields: {withCredentials: true},
+            data: {
+                "instance": {
+                    "is_cancelled": true
+                }
+            },
+            success: function(data, status, xhr){
+             
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+            console.log(XMLHttpRequest);
+		  }
+        });
+    }
 
     // function getDepartureFlights(){
     //     $.ajax({
@@ -299,6 +333,14 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 
 //--------------------------------------JS Functions-----------------------------------------//
+    function cancelRandomFlight(){
+        console.log(flightInstances);
+        var index = Math.floor(Math.random()*flightInstances.length + 1);
+        var flightInstance = flightInstances[index];
+        //console.log(flightInstance.id);
+        cancelFlight(flightInstance.id, flightInstance);
+        //console.log(flightInstance);
+    }
     function getUpComingFlights(hour){
         var time = getNextHour(hour);
         getDepartures(getCurrentTime(), time);
