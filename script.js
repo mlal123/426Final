@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     var toggle = false;
     var restaurantPlaces = [];
     var clicked = false;
+    var gettingCurrentLocation = false;
     var url = "http://comp426.cs.unc.edu:3001";
 
     login("nholroyd2", "tarheels");
@@ -17,6 +18,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
         this.setTime(this.getTime() + (h*60*60*1000)); 
         return this;   
     }
+    
+    console.log(airports["hello"]);
 
     //getUpComingFlights(6);
     getTickets();
@@ -365,7 +368,29 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  }
         });
     }
+    function addNewAirport(airport){
 
+        $.ajax({
+            url: url + "/airports",
+            type: "POST",
+            xhrFields: {withCredentials: true},
+            data: {
+                "airport": {
+                    "name": airport.name,
+                    "code": "manual",
+                    "latitude": airport.geometry.location.lat(),
+                    "longitude": airport.geometry.location.lng()
+                }
+            },
+            success: function(ddata, status, xhr){
+                console.log("airport added")
+            },
+            error: function(XMHttpRequest, textStatus, errorThrown){
+                console.log(errorThrown);
+                console.log(XMLHttpRequest);
+            }
+        });
+    }
    
     
 
@@ -404,6 +429,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     function initMap(lat, lon, type) {
         var myLatLng = new google.maps.LatLng(lat, lon);
+        gettingCurrentLocation = false;
         var mapOptions = {
             center: myLatLng,
             zoom: 12
@@ -428,6 +454,16 @@ document.addEventListener("DOMContentLoaded", function (event) {
             types: [type]
         }, callback);
     }
+    
+    function searchClosest(map, myLatLng, type){
+        var service = new google.maps.places.PlacesService(map);
+        service.nearbySearch({
+            location: myLatLng,
+            rankBy: google.maps.places.RankBy.DISTANCE,
+            types: [type]
+        }, callback);
+    }
+    
     function mapUS(lat, lon){
         var latlng = new google.maps.LatLng(lat, lon);
         var mapOptions = {
@@ -439,6 +475,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     
     function getCurrentLocation(){
         defaultMapToUS();
+        gettingCurrentLocation = true;
         infoWindow = new google.maps.InfoWindow;
         
         // Try HTML5 geolocation.
@@ -453,7 +490,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 infoWindow.setContent('Location found.');
                 infoWindow.open(map);
                 map.setCenter(pos);
-                searchNearby(map, pos, "restaurant");
+                searchClosest(map, pos, "airport");
             }, function() {
                 handleLocationError(true, infoWindow, map.getCenter());
             });
@@ -477,6 +514,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
             for (var i = 0; i < results.length; i++) {
                 restaurantPlaces[i]= results[i];
                 var place = results[i];
+                if (gettingCurrentLocation && airports[place.name] == null){
+                    addNewAirport(place);
+                }
                 createMarker(place);
                 addPlaceToPlacesDiv(place);
             }
