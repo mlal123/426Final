@@ -79,11 +79,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var arriveAiport = $("#arrivalInput").val();
         var arrivalPort = airports[arriveAiport];
         var departPort = airports[departAirport];
-        var dateOf = $("#flightDate").val();
-        getExistingFlights(departPort, arrivalPort, dateOf);
+        getExistingFlights(departPort, arrivalPort);
 
-        $("#flightList").show();
-        $("#tickets").hide();
+        //$("#flightList").show();
+        //$("#tickets").hide();
         //console.log(inLocation);
         //postToTickets();
     });
@@ -92,19 +91,12 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".dropDepartures").show();
     });
     
-    $(document).on('click', "#arrival", function(){
-        console.log("hi");
-        $(".dropArrivals").show();
-    });
-    
     $("#departureInput").focusin(function(e){
-        console.log("yo");
        $(".dropDepartures").show();
         e.stopPropagation();
     });
     
     $("#arrivalInput").focusin(function(e){
-        console.log("yoo");
        $(".dropArrivals").show();
         e.stopPropagation();
     });
@@ -272,6 +264,22 @@ document.addEventListener("DOMContentLoaded", function (event) {
               getFlight(data.flight_id,ticket);
               var d = new Date(data.date);
               ticket.append("<div class = 'date'>" + data.date + "</div>");
+		  },
+		  error: function(XMLHttpRequest,textStatus, errorThrown) {
+			console.log(errorThrown);
+		  }
+        });
+    }
+    
+    function getInstanceOfFlight(flight, departPort, arrivalPort){
+        $.ajax({
+            url: url + "/instances/?filter[flight_id]=" + flight.id,
+            type: "GET",
+		  xhrFields: {withCredentials: true},
+		  success: function(data, status, xhr){
+              data.forEach(instance => {
+                  addtoAvailableFlights(flight, instance, departPort, arrivalPort);
+              });
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -506,7 +514,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         input = document.getElementById("arrivalInput");
         filter = input.value.toUpperCase();
         var div = document.getElementById("dropdown_box3");
-        console.log(div);
         a = div.getElementsByTagName("a");
         for (i = 0; i < a.length; i++) {
             if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -635,23 +642,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
 //dateOf = $("#flightDate").val();
 
-function getExistingFlights(d, a, date){
-    console.log(d);
-    console.log(a);
+function getExistingFlights(d, a){
     var i = 1;
     $.ajax({
             url: url + "/flights?filter[departure_id]=" + d.id + "&filter[arrival_id]=" + a.id,
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-             console.log("found flight");
-             data.forEach(element => {
-                 console.log(element.id);
-             $("#availableFlights").append("<div id = '" + i + "' class = 'flightInstance'></div>");
-             var flight = $("#availableFlights").children("#" + i);
-             getDateOfFlights(element.id, date, flight, element.departs_at, d, a);
-             i++;
-             });
+             if (data.length > 0){
+                 console.log("flight exists!");
+                 data.forEach(flight => {
+                    /*$("#availableFlights").append("<div id = '" + flight.id + "' class = 'flightInstance'></div>");*/
+                     getInstanceOfFlight(flight, d, a)
+                    //getDateOfFlights(element.id, flight, element.departs_at, d, a);
+                });
+             }else{
+                 $("#availableFlights").append("<div class = 'flightInstance'>No Flights Found</div>"); 
+             }
+             
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -659,13 +667,26 @@ function getExistingFlights(d, a, date){
         });
 }
 
-function getDateOfFlights(id, date, flight, time, d, a){
+    
+function addtoAvailableFlights(flight, instance, departPort, arrivalPort){
+    $("#availableFlights").append("<div id = '" + instance.id + "' class = 'flightInstance'></div>");
+    var instanceDiv = $("#"+instance.id)[0];
+    
+    $("#"+instance.id).append("<div class='tix_date'>" + instance.date + "</div>");
+    $("#"+instance.id).append("<div class='tix_dt'>" + flight.departs_at.substring(11,16) + "</div>");
+    $("#"+instance.id).append("<div class='tix_df'>" + departPort.name + "</div>");
+    $("#"+instance.id).append("<div class='tix_at'>" + flight.arrives_at.substring(11,16) + "</div>");
+    $("#"+instance.id).append("<div class='tix_ato'>" + arrivalPort.name + "</div>");
+    
+}
+
+function getDateOfFlights(id, flight, time, d, a){
     $.ajax({
-        url:url + "/instances/?filter[flight_id]="+ id + "&filter[date]=" + date,
+        url:url + "/instances/?filter[flight_id]="+ id,
         type: 'GET',
         xhrFields: {withCredentials: true},
         success: function(data, status, xhr){
-            console.log(data);
+            
             flight[0].setAttribute('id', data[0].id);
             flight.append("<div class = 'date'>" + date+ " </div>");
             flight.append("<div class = 'time'>" + time + " </div>");
@@ -680,8 +701,9 @@ function getDateOfFlights(id, date, flight, time, d, a){
     });
 }
 
-$(document).on('click', ".select", function(){
-    var flight = $(this).parent();
+
+$(document).on('click', ".flightInstance", function(){
+    var flight = $(this);
     console.log(flight);
     postToTickets(parseInt(flight[0].id));
 });

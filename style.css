@@ -44,7 +44,41 @@ h1 {
     height: 10%;
     margin-bottom: 5px;
 }
-
+#tixHeader{
+    display: flex;
+	flex-direction: row;
+	text-align: center;
+	justify-content: space-evenly;
+	align-items: center;
+    font-size: 0.85em;
+    border-bottom: 1px solid #60605f;
+    #border-top: 1px solid grey;
+    height: 10%;
+    margin-bottom: 5px;
+}
+.theader {
+    #border: 1px solid black;
+}
+.tix_date {
+    width: 10%;
+    #font-size: 0.75em;
+}
+.tix_dt {
+    width: 15%;
+    #font-size: 0.75em;
+}
+.tix_at {
+    width: 15%;
+    #font-size: 0.75em;
+}
+.tix_df {
+    width: 30%;
+    #font-size: 0.75em;
+}
+.tix_ato{
+    width: 30%;
+    #font-size: 0.75em;
+}
 .tix{
     display:flex;
     flex-direction: row;
@@ -58,6 +92,15 @@ h1 {
 .flightInstance{
     display:flex;
     flex-direction: row;
+    border-radius: 8px;
+    height: 15%;
+    font-size: 0.85em;
+    background-color: aliceblue;
+    padding-top: 2%;
+}
+
+.flightInstance:hover{
+    background-color: #d8dfe5;
 }
 
 .restaurantObject{
@@ -71,7 +114,7 @@ h1 {
     #border-top: 1px solid grey;
     height: 15%;
     background-color: aliceblue;
-    border-radius: 5px;
+    border-radius: 8px;
     margin-bottom: 0.5%;
     padding-top: 2%;
 }
@@ -177,6 +220,8 @@ h1 {
 #tickets {
     display: none;
     height: 100%;
+    display: flex;
+    flex-direction: column;
 }
 
 .airport:hover {
@@ -338,11 +383,17 @@ html {
 }
 #bookFlight {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     height:50%;
+    width: 100%;
     margin: auto;
     position: relative;
-    overflow: hidden;
+}
+
+#availableFlights {
+    height: 80%;
+    width: 100%;
+    display: block;
 }
 
 .dropdown-content {
