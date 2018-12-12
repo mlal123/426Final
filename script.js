@@ -273,7 +273,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
               flightInstances = data.slice(0, 100);
-              setInterval(cancelRandomFlight, 5000);
+              setInterval(cancelRandomFlight, 1800000);
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
