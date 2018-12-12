@@ -267,10 +267,10 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  success: function(data, status, xhr){
                 //append another a or div to .ticket with airport name
                 if(state == "arrival"){
-                    ticket.append("<div class = 'arrivalAirport'>" + data.name + "</div>");
+                    ticket.append("<div class = 'arrivalAirport arrival'>" + data.name + "</div>");
                 }
                 if(state == "departure"){
-                    ticket.append("<div class = 'departureAirport'>" + data.name + "</div>");
+                    ticket.append("<div class = 'departureAirport departure'>" + data.name + "</div>");
                 }
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
@@ -636,8 +636,8 @@ function getDateOfFlights(id, date, flight, time, d, a){
             flight[0].setAttribute('id', data[0].id);
             flight.append("<div class = 'date'>" + date+ " </div>");
             flight.append("<div class = 'time'>" + time + " </div>");
-            flight.append("<div class = 'departureAirport'>" + d.name + "</div>");
-            flight.append("<div class = 'arrivalAirport'>" + a.name + " </div>");
+            flight.append("<div class = 'departureAirport departure'>" + d.name + "</div>");
+            flight.append("<div class = 'arrivalAirport arrival'>" + a.name + " </div>");
             flight.append("<button class = 'select'>Select</button>");
             
         },
