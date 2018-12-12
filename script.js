@@ -270,31 +270,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         });
     }
 
-   function postToTickets(){
-       $.ajax({
-           url: url + "/tickets",
-           type: "POST",
-           xhrFields: {withCredentials: true},
-           data:{ "ticket": {
-                "first_name": "nholroyd2",
-                "middle_name":  "",
-                "last_name":    "",
-                "age":          0,
-                "gender":       "",
-                "is_purchased": true,
-                "price_paid":   "",
-                "instance_id":  8,
-                "seat_id":      0
-           }
-        },
-		  success: function(data, status, xhr){
-              console.log("ticket");
-          },
-          error: function(XMLHttpRequest,textStatus, errorThrown){
-              console.log(errorThrown);
-          }
-       });
-   }
+   
     
 
 
@@ -610,9 +586,10 @@ $(document).on('click', '.airport2', function(){
 $(document).on('click', "#flightButton", function(){
     
     dateOf = $("#flightDate").val();
-    getExistingFlights(outLocation.id, inLocation.id, dateOf);
-    // $("#flightList").show();
-    // $("#tickets").hide();
+    getExistingFlights(outLocation, inLocation, dateOf);
+
+    $("#flightList").show();
+    $("#tickets").hide();
     //console.log(inLocation);
     //postToTickets();
 });
@@ -620,16 +597,17 @@ $(document).on('click', "#flightButton", function(){
 function getExistingFlights(d, a, date){
     var i = 1;
     $.ajax({
-            url: url + "/flights?filter[departure_id]=" + d + "&filter[arrival_id]=" + a,
+            url: url + "/flights?filter[departure_id]=" + d.id + "&filter[arrival_id]=" + a.id,
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
             
              data.forEach(element => {
                  console.log(element.id);
-             $("#availableFlights").append("<div id = " + i + "class = 'flightInstance'></div>");
+             $("#availableFlights").append("<div id = '" + i + "' class = 'flightInstance'></div>");
              var flight = $("#availableFlights").children("#" + i);
-             getDateOfFlights(element.id, date, flight);
+             getDateOfFlights(element.id, date, flight, element.departs_at, d, a);
+             i++;
              });
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
@@ -638,13 +616,20 @@ function getExistingFlights(d, a, date){
         });
 }
 
-function getDateOfFlights(id, date, flight){
+function getDateOfFlights(id, date, flight, time, d, a){
     $.ajax({
-        url:url + "/instances/?filter[flight_id]="+ id + "&[date]=" + date,
+        url:url + "/instances/?filter[flight_id]="+ id + "&filter[date]=" + date,
         type: 'GET',
         xhrFields: {withCredentials: true},
         success: function(data, status, xhr){
             console.log(data);
+            flight[0].setAttribute('id', data[0].id);
+            flight.append("<div class = 'date'>" + date+ " </div>");
+            flight.append("<div class = 'time'>" + time + " </div>");
+            flight.append("<div class = 'departureAirport'>" + d.name + "</div>");
+            flight.append("<div class = 'arrivalAirport'>" + a.name + " </div>");
+            flight.append("<button class = 'select'>Select</button>");
+            
         },
         error: function(XMLHttpRequest,textStatus, errorThrown){
             console.log(errorThrown);
@@ -652,6 +637,34 @@ function getDateOfFlights(id, date, flight){
     });
 }
 
+$(document).on('click', ".select", function(){
+    var flight = $(this).parent();
+    console.log(flight);
+    postToTickets(parseInt(flight[0].id));
+});
+
+function postToTickets(id){
+    $.ajax({
+        url: url + "/tickets",
+        type: "POST",
+        xhrFields: {withCredentials: true},
+        data:{ "ticket": {
+             "first_name": "nholroyd2",
+             "last_name":    "Holroyd",
+             "age":          21,
+             "gender":       "female",
+             "is_purchased": true,
+             "instance_id":  id
+        }
+     },
+       success: function(data, status, xhr){
+           console.log("ticket");
+       },
+       error: function(XMLHttpRequest,textStatus, errorThrown){
+           console.log(errorThrown);
+       }
+    });
+}
     
 });//onload
 			

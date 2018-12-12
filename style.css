@@ -27,7 +27,10 @@ h1 {
 #flightsHeader{
     display: flex;
 	flex-direction: row;
-
+}
+#flightsHeader2{
+    display: flex;
+	flex-direction: row;
 }
 #places_header{
     display: flex;
@@ -43,6 +46,10 @@ h1 {
 }
 
 .tix{
+    display:flex;
+    flex-direction: row;
+}
+.flightInstance{
     display:flex;
     flex-direction: row;
 }
