@@ -28,8 +28,11 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		e.preventDefault();
 	});
     
-    $("#departure").on('keyup', function(){
+    $("#departureInput").on('keyup', function(){
         filterFunction2();
+    });
+    $("#arrivalInput").on('keyup', function(){
+        filterFunction3();
     });
     $("#myInput").on('keyup', function(){
         filterFunction(); 
@@ -47,7 +50,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var id = airport_div[0].innerHTML;
         var airport = airports[id];
         showAirport(airport);
-
     });
     
     $(document).on("click", ".airport", function(){
@@ -58,6 +60,34 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".dropdown-content").hide();
     });
     
+    $(document).on("click", ".airport2", function(){
+        var airport_div = $(this);
+        var name = airport_div[0].innerHTML;
+        $("#arrivalInput").val(name);
+        $(".dropArrivals").hide();
+    });
+    
+    $(document).on("click", ".airport1", function(){
+        var airport_div = $(this);
+        var name = airport_div[0].innerHTML;
+        $("#departureInput").val(name);
+        $(".dropDepartures").hide();
+    });
+    
+    $(document).on('click', "#findFlightButton", function(){
+        var departAirport = $("#departureInput").val();
+        var arriveAiport = $("#arrivalInput").val();
+        var arrivalPort = airports[arriveAiport];
+        var departPort = airports[departAirport];
+        var dateOf = $("#flightDate").val();
+        getExistingFlights(departPort, arrivalPort, dateOf);
+
+        $("#flightList").show();
+        $("#tickets").hide();
+        //console.log(inLocation);
+        //postToTickets();
+    });
+    
     $(document).on('click', "#departure", function(){
         $(".dropDepartures").show();
     });
@@ -65,6 +95,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $(document).on('click', "#arrival", function(){
         console.log("hi");
         $(".dropArrivals").show();
+    });
+    
+    $("#departureInput").focusin(function(e){
+        console.log("yo");
+       $(".dropDepartures").show();
+        e.stopPropagation();
+    });
+    
+    $("#arrivalInput").focusin(function(e){
+        console.log("yoo");
+       $(".dropArrivals").show();
+        e.stopPropagation();
     });
     
     $(".searchbar").focusin(function(e){
@@ -78,6 +120,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
     
     $(document).click(function(){
         $(".dropdown-content").hide();
+        $(".dropArrivals").hide();
+        $(".dropDepartures").hide();
     });
    
     $("#logout").click(function (e){
@@ -416,9 +460,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
          Object.keys(airports).sort().forEach(function(key, i) {
              var airport = airports[key];
              //console.log(airport);
-             /*
-             $(".dropDepartures").append("<a class='airport1' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");
-             $(".dropArrivals").append("<a class='airport2' data-price = " + airport.price_level + " data-rating = " + airport.rating + " data-open = " + airport.opening_hours + " id =" + airport.id +">" + airport.name + "</a>");*/
+        
+             $(".dropDepartures").append("<a class='airport1'>" + airport.name + "</a>");
+             $(".dropArrivals").append("<a class='airport2'>" + airport.name + "</a>");
              $(".dropdown-content").append("<a class='airport'>" + airport.name + "</a>");
          });
     }  
@@ -445,9 +489,24 @@ document.addEventListener("DOMContentLoaded", function (event) {
     }
     function filterFunction2(){
         var input, filter, ul, li, a, i;
-        input = document.getElementById("departure");
+        input = document.getElementById("departureInput");
         filter = input.value.toUpperCase();
-        var div = document.getElementsByClassName("dropDepartures");
+        var div = document.getElementById("dropdown_box2");
+        a = div.getElementsByTagName("a");
+        for (i = 0; i < a.length; i++) {
+            if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                a[i].style.display = "";
+            } else {
+                a[i].style.display = "none";
+            }
+        }
+    }
+    function filterFunction3(){
+        var input, filter, ul, li, a, i;
+        input = document.getElementById("arrivalInput");
+        filter = input.value.toUpperCase();
+        var div = document.getElementById("dropdown_box3");
+        console.log(div);
         a = div.getElementsByTagName("a");
         for (i = 0; i < a.length; i++) {
             if (a[i].innerHTML.toUpperCase().indexOf(filter) > -1) {
@@ -574,44 +633,18 @@ document.addEventListener("DOMContentLoaded", function (event) {
         sortByOpen();
     });
 
-
-// book flights
-//var name = $("#login_form")[0].username.value;
-var outLocation, inLocation, dateOf;
-$(document).on('click', '.airport1', function(){
-    var airport_div = $(this);
-    var id = airport_div[0].innerHTML;
-    outLocation = airports[id];
-    var a = airport_div.parents().parent().children("input");
-    $("input#departure:text").value = id;
-});
-
-$(document).on('click', '.airport2', function(){
-    var airport_div = $(this);
-    var id = airport_div[0].innerHTML;
-    inLocation = airports[id];
-});
-
 //dateOf = $("#flightDate").val();
-$(document).on('click', "#flightButton", function(){
-    
-    dateOf = $("#flightDate").val();
-    getExistingFlights(outLocation, inLocation, dateOf);
-
-    $("#flightList").show();
-    $("#tickets").hide();
-    //console.log(inLocation);
-    //postToTickets();
-});
 
 function getExistingFlights(d, a, date){
+    console.log(d);
+    console.log(a);
     var i = 1;
     $.ajax({
             url: url + "/flights?filter[departure_id]=" + d.id + "&filter[arrival_id]=" + a.id,
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
-            
+             console.log("found flight");
              data.forEach(element => {
                  console.log(element.id);
              $("#availableFlights").append("<div id = '" + i + "' class = 'flightInstance'></div>");
