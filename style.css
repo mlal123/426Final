@@ -388,6 +388,8 @@ html {
     width: 100%;
     margin: auto;
     position: relative;
+    align-items: center;
+    text-align: center;
 }
 
 #availableFlights {
