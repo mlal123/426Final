@@ -76,11 +76,13 @@ document.addEventListener("DOMContentLoaded", function (event) {
     $(document).on('click', "#findFlightButton", function(){
         var departAirport = $("#departureInput").val();
         var arriveAiport = $("#arrivalInput").val();
-        var arrivalPort = airports[arriveAiport];
-        var departPort = airports[departAirport];
-        getExistingFlights(departPort, arrivalPort);
-        removeAvailableFlights();
-        removeNoFlights();
+        if (departAirport != "" && arrivalPort !=""){
+            var arrivalPort = airports[arriveAiport];
+            var departPort = airports[departAirport];
+            getExistingFlights(departPort, arrivalPort);
+            removeAvailableFlights();
+            removeNoFlights();
+        }
     });
     
     $(document).on('click', "#departure", function(){
