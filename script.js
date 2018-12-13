@@ -349,7 +349,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
               flightInstances = data.slice(0, 100);
-              setInterval(cancelRandomFlight, 1800000);
+              setInterval(cancelRandomFlight, 300000);
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
@@ -367,7 +367,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
                 }
             },
             success: function(data, status, xhr){
-                console.log("Flight " + id + "has been cancelled");
+                console.log("Flight " + id + " has been cancelled");
+                alert("Flight " + id + " has been cancelled");
 		  },
 		  error: function(XMLHttpRequest,textStatus, errorThrown) {
 			console.log(errorThrown);
