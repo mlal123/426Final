@@ -80,6 +80,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var departPort = airports[departAirport];
         getExistingFlights(departPort, arrivalPort);
         removeAvailableFlights();
+        removeNoFlights();
     });
     
     $(document).on('click', "#departure", function(){
@@ -123,10 +124,6 @@ document.addEventListener("DOMContentLoaded", function (event) {
         var flight = $(this);
         postToTickets(parseInt(flight[0].id));
     });
-   
-    $("#logout").click(function (e){
-        logout();
-    });
     
     $("#myairport").click(function (e){
         $(".map_stuff").show();
@@ -134,6 +131,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $("#tickets").hide();
         $("#mapheader").html("Airports Near Me");
         emptyMap();
+        tearDownMyLocationPage();
+        tearDownMyTicketsPage();
+        tearDownAirportsPage();
         getCurrentLocation();
     });
     
@@ -141,6 +141,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".map_stuff").hide();
         $("#main_page").hide();
         $("#tickets").show();
+        tearDownMyLocationPage();
+        tearDownMyTicketsPage();
+        tearDownAirportsPage();
         getTickets();
     });
     
@@ -149,6 +152,9 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".map_stuff").hide();
         $("#main_page").show();
         $("#tickets").hide();
+        tearDownMyLocationPage();
+        tearDownMyTicketsPage();
+        tearDownAirportsPage();
     });
 
     
@@ -237,7 +243,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function getTickets(){
         var i = 1;
         $.ajax({
-            url: url + "/tickets?filter[first_name_like]= John & filter[last_name_like] = Smith",
+            url: url + "/tickets?filter[first_name_like]= nholroyd & filter[last_name_like] = Holroyd",
             type: "GET",
 		  xhrFields: {withCredentials: true},
 		  success: function(data, status, xhr){
@@ -412,7 +418,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
             },
             success: function(data, status, xhr){
                 console.log("ticket");
-                $("#myCurrentFlights").empty();
+                emptyCurrentFlights();
                 getTickets();
             },
             error: function(XMLHttpRequest,textStatus, errorThrown){
@@ -657,7 +663,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     function showAirport(airport){
         $(".map_stuff").show();
         $("#main_page").hide();
-        $("#tickets").hide();
+        tearDownMyTicketsPage();
         $("#mapheader").html(airport.name);
         initMap(airport.latitude, airport.longitude, 'restaurant');
     }
@@ -794,6 +800,38 @@ document.addEventListener("DOMContentLoaded", function (event) {
     
     function removeAvailableFlights(){
         $(".flightInstance").remove();
+    }
+    
+    function resetInputFields(){
+        $("#departureInput").val('');
+        $("#arrivalInput").val('');
+    }
+    
+    function resetMainSearchInput(){
+        $(".searchbar").val('');
+    }
+    
+    function emptyCurrentFlights(){
+        $("#myCurrentFlights").empty();
+    }
+    
+    function removeNoFlights(){
+        $(".noflights").remove();
+    }
+    
+    function tearDownMyLocationPage(){
+        
+    }
+    
+    function tearDownMyTicketsPage(){
+        removeAvailableFlights();
+        emptyCurrentFlights();
+        resetInputFields();
+        removeNoFlights();
+    }
+    
+    function tearDownAirportsPage(){
+         
     }
     
 });//onload
