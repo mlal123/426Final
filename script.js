@@ -15,7 +15,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
     getAllInstances();
 
     //getUpComingFlights(6);
-    getTickets();
+    //getTickets();
     //getDepartureFlights();
 
     $("#login_form").submit(function (e){
@@ -132,15 +132,17 @@ document.addEventListener("DOMContentLoaded", function (event) {
         $(".map_stuff").show();
         $("#main_page").hide();
         $("#tickets").hide();
+        $("#mapheader").html("Airports Near Me");
         emptyMap();
-        //defaultMapToUS(); 
         getCurrentLocation();
     });
+    
     $("#mytickets").click(function(){
         $(".map_stuff").hide();
         $("#main_page").hide();
         $("#tickets").show();
-    })
+        getTickets();
+    });
     
     $("#home").click(function (e){
         emptyMap();
@@ -379,7 +381,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                     "longitude": airport.geometry.location.lng()
                 }
             },
-            success: function(ddata, status, xhr){
+            success: function(data, status, xhr){
                 console.log("airport added");
                 emptyDropArrivals();
                 emptyDropDepartures();
@@ -410,6 +412,8 @@ document.addEventListener("DOMContentLoaded", function (event) {
             },
             success: function(data, status, xhr){
                 console.log("ticket");
+                $("#myCurrentFlights").empty();
+                getTickets();
             },
             error: function(XMLHttpRequest,textStatus, errorThrown){
                 console.log(errorThrown);
@@ -430,7 +434,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
                         getInstanceOfFlight(flight, d, a);
                     });
                 }else{
-                    $("#availableFlights").append("<div class = 'flightInstance'>No Flights Found</div>"); 
+                    $("#availableFlights").append("<div class = 'noflights'>No Flights Found</div>"); 
                 }
             },
             error: function(XMLHttpRequest,textStatus, errorThrown) {
@@ -556,6 +560,7 @@ document.addEventListener("DOMContentLoaded", function (event) {
 
     function callback(results, status){
         if (status === google.maps.places.PlacesServiceStatus.OK){
+            //if ()
             for (var i = 0; i < results.length; i++) {
                 restaurantPlaces[i]= results[i];
                 var place = results[i];
